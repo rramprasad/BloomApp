@@ -15,15 +15,13 @@
  */
 package dev.ramprasad.bloom
 
-import dev.ramprasad.bloom.ui.Home
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import dev.ramprasad.bloom.ui.LandingScreen
-import dev.ramprasad.bloom.ui.Login
-import dev.ramprasad.bloom.ui.Welcome
 import dev.ramprasad.bloom.ui.theme.MyTheme
 import androidx.navigation.compose.*
+import dev.ramprasad.bloom.ui.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,11 +41,14 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     composable("Welcome"){
-                        Welcome(){
+                        WelcomeScreen({
+                            // On Create Account Clicked
+                            Toast.makeText(this@MainActivity, "On Create Account Clicked", Toast.LENGTH_SHORT).show()
+                        }){
                             navController.navigate("Login")
                         }
                     }
-                    composable("Login"){ Login() }
+                    composable("Login"){ LoginScreen() }
                     composable("Home"){ Home() }
                 }
             }

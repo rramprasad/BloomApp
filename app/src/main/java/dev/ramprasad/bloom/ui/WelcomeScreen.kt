@@ -3,7 +3,9 @@ package dev.ramprasad.bloom.ui
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +26,7 @@ import dev.ramprasad.bloom.ui.theme.MyTheme
 
 
 @Composable
-fun Welcome(onCreateAccountClicked : () -> Unit){
+fun WelcomeScreen(onCreateAccountClicked : () -> Unit, onLoginClicked : () -> Unit){
     Box(modifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colors.primary)
@@ -45,18 +49,23 @@ fun Welcome(onCreateAccountClicked : () -> Unit){
                 Spacer(modifier = Modifier
                     .size(8.dp)
                     .fillMaxWidth())
-                LoginLink()
+                LoginLink(onLoginClicked)
             }
         }
     }
 }
 
 @Composable
-private fun LoginLink() {
+private fun LoginLink(onLoginClicked: () -> Unit) {
+    val rememberLoginClicked by rememberUpdatedState(newValue = onLoginClicked)
+
     Text(
-        text = stringResource(  R.string.login),
+        text = AnnotatedString(stringResource(R.string.login)),
         modifier = Modifier
             .fillMaxWidth()
+            .clickable {
+                rememberLoginClicked()
+            }
             .padding(0.dp, 16.dp),
         style = MaterialTheme.typography.subtitle1,
         color = MaterialTheme.colors.onPrimary,
@@ -160,9 +169,7 @@ fun WelcomeBackGround() {
 @Composable
 fun PreviewLightWelcome(){
     MyTheme(false) {
-        Welcome{
-
-        }
+        WelcomeScreen({}){}
     }
 }
 
@@ -175,6 +182,6 @@ fun PreviewLightWelcome(){
 @Composable
 fun PreviewDarkWelcome(){
     MyTheme(true) {
-        Welcome{}
+        WelcomeScreen({}){}
     }
 }
