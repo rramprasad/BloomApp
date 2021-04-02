@@ -2,6 +2,10 @@
 
 Beautiful home garden solution Android app developed using latest Android UI tool Jetpack Compose and implemented most of the new Android APIs.
 
+## Screens
+![Screenshot1](results/screenshot_1.png) ![Screenshot2](results/screenshot_2.png)
+
+
 ## Introduction
 Beautiful home garden solution Android app developed using latest Android UI tool Jetpack Compose and implemented most of the new Android APIs.
 
