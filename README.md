@@ -14,7 +14,7 @@ Beautiful home garden solution Android app developed using latest Android UI too
 
 ## Latest Android libraries/components used:
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
-- [Jetpack Compose Navigation](https://developer.android.com/jetpack/compose/navigation
+- [Jetpack Compose Navigation](https://developer.android.com/jetpack/compose/navigation)
 
 ## Note
 This app is my demo application to explore all new Android features and APIs on my free time.
