@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.ramprasad.bloom.R
-import dev.ramprasad.bloom.ui.theme.MyTheme
+import dev.ramprasad.bloom.ui.theme.BloomTheme
 
 
 @Composable
@@ -168,7 +168,7 @@ fun WelcomeBackGround() {
 )
 @Composable
 fun PreviewLightWelcome(){
-    MyTheme(false) {
+    BloomTheme(false) {
         WelcomeScreen({}){}
     }
 }
@@ -181,7 +181,7 @@ fun PreviewLightWelcome(){
 )
 @Composable
 fun PreviewDarkWelcome(){
-    MyTheme(true) {
+    BloomTheme(true) {
         WelcomeScreen({}){}
     }
 }

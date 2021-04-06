@@ -1,6 +1,5 @@
 package dev.ramprasad.bloom.ui
 
-import dev.ramprasad.bloom.ui.theme.MyTheme
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import dev.ramprasad.bloom.R
+import dev.ramprasad.bloom.ui.theme.BloomTheme
 
 private const val SplashWaitTimeInMillis: Long = 2000
 
@@ -50,7 +50,7 @@ fun LandingScreen(onTimeout : () -> Unit)
 )
 @Composable
 fun PreviewLightSplashScreen(){
-    MyTheme(false) {
+    BloomTheme(false) {
         LandingScreen {
 
         }
@@ -62,7 +62,7 @@ fun PreviewLightSplashScreen(){
 )
 @Composable
 fun PreviewDarkSplashScreen(){
-    MyTheme(true) {
+    BloomTheme(true) {
         LandingScreen {
 
         }

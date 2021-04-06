@@ -19,16 +19,16 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import dev.ramprasad.bloom.ui.theme.MyTheme
 import androidx.navigation.compose.*
 import dev.ramprasad.bloom.ui.*
+import dev.ramprasad.bloom.ui.theme.BloomTheme
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyTheme {
+            BloomTheme {
                 val navController = rememberNavController()
                 NavHost(navController,"LandingScreen"){
                     composable("LandingScreen"){
