@@ -1,19 +1,34 @@
 package dev.ramprasad.bloom.ui
 
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.*
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -60,51 +75,166 @@ fun LoginTitle() {
 
 @Composable
 fun EmailTextField() {
+    var email by rememberSaveable {
+        mutableStateOf("")
+    }
+
     OutlinedTextField(
-        value = "",
-        onValueChange = {},
+        value = email,
+        onValueChange = {
+            if(it.length < 50){
+                email = it
+            }
+        },
         placeholder = { Text(text = stringResource(id = R.string.email_address),color = MaterialTheme.colors.onPrimary)},
         enabled = true,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp, 0.dp, 16.dp, 0.dp)
-            .border(1.dp, MaterialTheme.colors.surface),
+            .padding(16.dp, 0.dp, 16.dp, 0.dp),
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email
+        ),
         textStyle = MaterialTheme.typography.body1,
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colors.background
+            backgroundColor = MaterialTheme.colors.background,
+            textColor = MaterialTheme.colors.onPrimary,
+            focusedIndicatorColor = MaterialTheme.colors.onPrimary,
+            focusedLabelColor = MaterialTheme.colors.onPrimary,
+            cursorColor = MaterialTheme.colors.onPrimary
         )
-
     )
 }
 
 @Composable
 fun PasswordTextField() {
+    var password by rememberSaveable {
+        mutableStateOf("")
+    }
+
     OutlinedTextField(
-        value = "",
-        onValueChange = {},
+        value = password,
+        onValueChange = {
+            if(it.length < 50) {
+                password = it
+            }
+        },
         placeholder = { Text(text = stringResource(id = R.string.password),color = MaterialTheme.colors.onPrimary)},
         enabled = true,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp, 0.dp, 16.dp, 0.dp)
-            .border(1.dp, MaterialTheme.colors.surface),
+            .padding(16.dp, 0.dp, 16.dp, 0.dp),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password
+        ),
+        singleLine = true,
+        visualTransformation = PasswordVisualTransformation(),
         textStyle = MaterialTheme.typography.body1,
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colors.background
+            backgroundColor = MaterialTheme.colors.background,
+            textColor = MaterialTheme.colors.onPrimary,
+            focusedIndicatorColor = MaterialTheme.colors.onPrimary,
+            focusedLabelColor = MaterialTheme.colors.onPrimary,
+            cursorColor = MaterialTheme.colors.onPrimary
         )
     )
 }
 
 @Composable
 fun TermsOfUseText() {
-    Text(text = stringResource(id = R.string.terms_of_use),
+    val annotatedString1 = buildAnnotatedString {
+        append(stringResource(id = R.string.terms_of_use_1))
+        addStringAnnotation(
+            tag = "TERMS_OF_USE",
+            annotation = "https://developer.android.com",
+            start = 35,
+            end = 46
+        )
+        addStyle(
+            SpanStyle(
+                textDecoration = TextDecoration.Underline,
+            ),
+            start = 36,
+            end = 48
+        )
+
+        addStyle(
+            SpanStyle(
+                color = MaterialTheme.colors.onPrimary
+            ),
+            start = 0,
+            end = 48
+        )
+    }
+
+    val annotatedString2 = buildAnnotatedString {
+        append(stringResource(id = R.string.terms_of_use_2))
+        addStringAnnotation(
+            tag = "PRIVACY_POLICY",
+            annotation = "https://developer.android.com",
+            start = 19,
+            end = 33
+        )
+        addStyle(
+            SpanStyle(
+                textDecoration = TextDecoration.Underline
+            ),
+            start = 19,
+            end = 33
+        )
+
+        addStyle(
+            SpanStyle(
+                color = MaterialTheme.colors.onPrimary
+            ),
+            start = 0,
+            end = 33
+        )
+    }
+
+    val annotatedString = buildAnnotatedString {
+        withStyle(ParagraphStyle(
+            textAlign = TextAlign.Center
+        )){
+            append(annotatedString1)
+            append(" ")
+            append(annotatedString2)
+        }
+    }
+
+    val currentContext = LocalContext.current
+    ClickableText(text = annotatedString,
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp, 0.dp, 16.dp, 0.dp),
         style = MaterialTheme.typography.body2,
-        color = MaterialTheme.colors.onPrimary,
-        textAlign = TextAlign.Center
+        onClick = { offset ->
+            annotatedString.getStringAnnotations(
+                tag = "TERMS_OF_USE",
+                start = offset,
+                end = offset
+            ).firstOrNull()?.let {
+                launchInBrowser(it, currentContext)
+            }
+
+            annotatedString.getStringAnnotations(
+                tag = "PRIVACY_POLICY",
+                start = offset,
+                end = offset
+            ).firstOrNull()?.let {
+                launchInBrowser(it, currentContext)
+            }
+        }
     )
+}
+
+private fun launchInBrowser(
+    it: AnnotatedString.Range<String>,
+    currentContext: Context
+) {
+    val intent = Intent(Intent.ACTION_VIEW)
+    intent.data = Uri.parse(it.item)
+    currentContext.startActivity(intent)
 }
 
 @Composable
