@@ -4,9 +4,9 @@ Beautiful home garden solution Android app developed using latest Android UI too
 
 ## App Screens
 ## Light Theme
-<img src="results/screenshot_1.png" width="320" height="640"><img src="results/screenshot_2.png" width="320" height="640">
+<img src="results/screenshot_1.png" width="320" height="640"> <img src="results/screenshot_3.png" width="320" height="640">
 ## Dark Theme
-<img src="results/screenshot_3.png" width="320" height="640"><img src="results/screenshot_4.png" width="320" height="640">
+<img src="results/screenshot_2.png" width="320" height="640"> <img src="results/screenshot_4.png" width="320" height="640">
 
 
 
