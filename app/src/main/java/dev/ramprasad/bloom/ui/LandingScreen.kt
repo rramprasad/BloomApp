@@ -22,7 +22,7 @@ import dev.ramprasad.bloom.ui.theme.BloomTheme
 private const val LOG_TAG: String = "LandingScreen"
 
 @Composable
-fun LandingScreen(onTimeout : () -> Unit)
+fun LandingScreen(onTimeout : () -> Unit,)
 {
     Column(
         modifier = Modifier

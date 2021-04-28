@@ -20,11 +20,22 @@ import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.google.accompanist.insets.ExperimentalAnimatedInsets
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
 import dev.ramprasad.bloom.data.GardenTheme
 import dev.ramprasad.bloom.data.Plant
 import dev.ramprasad.bloom.ui.*
@@ -32,11 +43,14 @@ import dev.ramprasad.bloom.ui.theme.BloomTheme
 
 class MainActivity : AppCompatActivity() {
 
+    @ExperimentalAnimatedInsets
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             BloomTheme {
-                AppMainNavigation()
+                ProvideWindowInsets(windowInsetsAnimationsEnabled = true,consumeWindowInsets = true) {
+                    AppMainNavigation()
+                }
             }
         }
     }
@@ -44,17 +58,17 @@ class MainActivity : AppCompatActivity() {
     @Composable
     private fun AppMainNavigation() {
         val navController = rememberNavController()
-        NavHost(navController, "LandingScreen") {
-            composable("LandingScreen") {
+        NavHost(navController, Screen.LandingScreen.route) {
+            composable(Screen.LandingScreen.route) {
                 LandingScreen {
-                    navController.navigate("WelcomeScreen") {
-                        popUpTo("LandingScreen") {
+                    navController.navigate(Screen.WelcomeScreen.route) {
+                        popUpTo(Screen.LandingScreen.route) {
                             inclusive = true
                         }
                     }
                 }
             }
-            composable("WelcomeScreen") {
+            composable(Screen.WelcomeScreen.route) {
                 WelcomeScreen({
                     // On Create Account Clicked
                     Toast.makeText(
@@ -63,23 +77,45 @@ class MainActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }) {
-                    navController.navigate("LoginScreen")
+                    navController.navigate(Screen.LoginScreen.route)
                 }
             }
-            composable("LoginScreen") {
+            composable(Screen.LoginScreen.route) {
                 LoginScreen {
-                    navController.navigate("HomeBase")
+                    navController.navigate(Screen.HomeBaseScreen.route)
                 }
             }
-            composable("HomeBase") {
+            composable(Screen.HomeBaseScreen.route) {
                 HomeBase()
-                HomeNavigation()
             }
         }
     }
 
     @Composable
-    private fun HomeNavigation() {
+    private fun HomeBase() {
+        val homeNavController = rememberNavController()
+
+        Scaffold(
+            drawerBackgroundColor = MaterialTheme.colors.primary,
+            drawerContent = {
+
+            },
+            drawerContentColor = MaterialTheme.colors.onBackground,
+            drawerElevation = 4.dp,
+            drawerGesturesEnabled = true,
+            drawerScrimColor = MaterialTheme.colors.secondary,
+            drawerShape = MaterialTheme.shapes.medium,
+            bottomBar = {
+                BottomNavigation(homeNavController)
+            },
+            modifier = Modifier.navigationBarsPadding()
+        ) {
+            HomeNavigation(homeNavController)
+        }
+    }
+
+    @Composable
+    private fun HomeNavigation(homeNavController: NavHostController) {
         val gardenThemesList = arrayListOf(
             GardenTheme(1, stringResource(R.string.desert_chic),"https://raw.githubusercontent.com/rramprasad/BloomAppAssets/main/Themes/theme1.jpg"),
             GardenTheme(2, stringResource(R.string.tiny_terrariums),"https://raw.githubusercontent.com/rramprasad/BloomAppAssets/main/Themes/theme2.jpg"),
@@ -95,67 +131,49 @@ class MainActivity : AppCompatActivity() {
             Plant(5, stringResource(R.string.snake_plant),"https://raw.githubusercontent.com/rramprasad/BloomAppAssets/main/Plants/plant5.jpg",stringResource(R.string.plant_description)),
             Plant(6, stringResource(R.string.pothos),"https://raw.githubusercontent.com/rramprasad/BloomAppAssets/main/Plants/plant6.jpg",stringResource(R.string.plant_description))
         )
-
-        val homeNavController = rememberNavController()
-        NavHost(navController = homeNavController, startDestination = "HomeScreen") {
-            composable("HomeScreen") {
+        NavHost(navController = homeNavController, startDestination = Screen.HomeScreen.route) {
+            composable(Screen.HomeScreen.route) {
                 HomeScreen(gardenThemesList, plantsList)
             }
 
-            composable("FavoritesScreen") {
+            composable(Screen.FavoritesScreen.route) {
                 FavoritesScreen()
             }
 
-            composable("UserProfileScreen") {
+            composable(Screen.UserProfileScreen.route) {
                 UserProfileScreen()
             }
 
-            composable("CartScreen") {
+            composable(Screen.CartScreen.route) {
                 CartScreen()
             }
         }
     }
 
-    @Composable
-    private fun HomeBase() {
-        Scaffold(
-            drawerBackgroundColor = MaterialTheme.colors.primary,
-            drawerContent = {
 
-            },
-            drawerContentColor = MaterialTheme.colors.onBackground,
-            drawerElevation = 4.dp,
-            drawerGesturesEnabled = true,
-            drawerScrimColor = MaterialTheme.colors.secondary,
-            drawerShape = MaterialTheme.shapes.medium,
-            bottomBar = {
-                BottomNavigation()
-            },
-        ) {
-
-        }
-    }
 }
 
 @Composable
-private fun BottomNavigation() {
+private fun BottomNavigation(homeNavController: NavHostController) {
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.primary,
         elevation = 16.dp,
         contentColor = MaterialTheme.colors.onPrimary,
         content = {
+            val homeNavBackStackEntry by homeNavController.currentBackStackEntryAsState()
+            val currentRoute = homeNavBackStackEntry?.arguments?.getString(KEY_ROUTE)
+
             BottomNavigationItem(
                 icon = {
-                    Icon(
-                        painterResource(
-                            id = R.drawable.ic_baseline_home_24
-                        ),
-                        contentDescription = null
-                    )
+                    Icon(Icons.Filled.Home,null)
                 },
                 label = { Text(stringResource(id = R.string.home)) },
-                selected = true,
+                selected = currentRoute == Screen.HomeScreen.route,
                 onClick = {
+                    homeNavController.navigate(Screen.HomeScreen.route){
+                        popUpTo = homeNavController.graph.startDestination
+                        launchSingleTop = true
+                    }
                 },
                 selectedContentColor = MaterialTheme.colors.onPrimary,
                 unselectedContentColor = MaterialTheme.colors.secondary,
@@ -165,16 +183,17 @@ private fun BottomNavigation() {
             BottomNavigationItem(
                 icon = {
                     Icon(
-                        painterResource(
-                            id = R.drawable.ic_baseline_favorite_border_24
-                        ),
+                        Icons.Outlined.FavoriteBorder,
                         contentDescription = null
                     )
                 },
                 label = { Text(stringResource(id = R.string.favorites)) },
-                selected = false,
+                selected = currentRoute == Screen.FavoritesScreen.route,
                 onClick = {
-
+                    homeNavController.navigate(Screen.FavoritesScreen.route){
+                        popUpTo = homeNavController.graph.startDestination
+                        launchSingleTop = true
+                    }
                 },
                 selectedContentColor = MaterialTheme.colors.onPrimary,
                 unselectedContentColor = MaterialTheme.colors.secondary,
@@ -184,16 +203,17 @@ private fun BottomNavigation() {
             BottomNavigationItem(
                 icon = {
                     Icon(
-                        painterResource(
-                            id = R.drawable.ic_baseline_account_circle_24
-                        ),
+                        Icons.Filled.AccountCircle,
                         contentDescription = null
                     )
                 },
                 label = { Text(stringResource(id = R.string.profile)) },
-                selected = false,
+                selected = currentRoute == Screen.UserProfileScreen.route,
                 onClick = {
-
+                    homeNavController.navigate(Screen.UserProfileScreen.route){
+                        popUpTo = homeNavController.graph.startDestination
+                        launchSingleTop = true
+                    }
                 },
                 selectedContentColor = MaterialTheme.colors.onPrimary,
                 unselectedContentColor = MaterialTheme.colors.secondary,
@@ -203,16 +223,17 @@ private fun BottomNavigation() {
             BottomNavigationItem(
                 icon = {
                     Icon(
-                        painterResource(
-                            id = R.drawable.ic_baseline_shopping_cart_24
-                        ),
+                        Icons.Filled.ShoppingCart,
                         contentDescription = null
                     )
                 },
                 label = { Text(stringResource(id = R.string.cart)) },
-                selected = false,
+                selected = currentRoute == Screen.CartScreen.route,
                 onClick = {
-
+                    homeNavController.navigate(Screen.CartScreen.route){
+                        popUpTo = homeNavController.graph.startDestination
+                        launchSingleTop = true
+                    }
                 },
                 selectedContentColor = MaterialTheme.colors.onPrimary,
                 unselectedContentColor = MaterialTheme.colors.secondary,
