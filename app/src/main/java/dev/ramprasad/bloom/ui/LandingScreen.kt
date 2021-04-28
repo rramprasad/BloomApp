@@ -1,48 +1,79 @@
 package dev.ramprasad.bloom.ui
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import kotlinx.coroutines.delay
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieAnimationSpec
+import com.airbnb.lottie.compose.rememberLottieAnimationState
 import dev.ramprasad.bloom.R
 import dev.ramprasad.bloom.ui.theme.BloomTheme
 
-private const val SplashWaitTimeInMillis: Long = 2000
+private const val LOG_TAG: String = "LandingScreen"
 
 @Composable
 fun LandingScreen(onTimeout : () -> Unit)
 {
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.primary),
-        contentAlignment = Alignment.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
-        val rememberUpdatedState by rememberUpdatedState(newValue = onTimeout)
-        LaunchedEffect(true){
-            delay(SplashWaitTimeInMillis)
-            rememberUpdatedState()
+        val rememberedOnTimeout by rememberUpdatedState(newValue = onTimeout)
+        val rememberedAppNameVisibility by rememberSaveable {
+            mutableStateOf(false)
         }
-
-        if(MaterialTheme.colors.isLight){
-            Image(painterResource(id = R.drawable.ic_light_welcome_illos), contentDescription = null)
-        }
-        else{
-            Image(painterResource(id = R.drawable.ic_dark_welcome_illos), contentDescription = null)
-        }
+        LoadLottieAnimation(rememberedOnTimeout)
+        AppName(rememberedAppNameVisibility)
     }
+}
+
+@Composable
+fun LoadLottieAnimation(rememberedOnTimeout: () -> Unit) {
+    val animationSpec = remember {
+        LottieAnimationSpec.RawRes(R.raw.bloom_animation)
+    }
+
+    val animationState = rememberLottieAnimationState(
+        autoPlay = true,
+        repeatCount = 0
+    )
+    animationState.speed = 1F
+
+    LottieAnimation(
+        spec = animationSpec,
+        modifier = Modifier
+            .wrapContentWidth()
+            .wrapContentHeight(),
+        animationState = animationState
+    )
+
+    if(!animationState.isPlaying){
+        rememberedOnTimeout()
+    }
+}
+
+@Composable
+fun AppName(rememberedAppNameVisibility: Boolean) {
+    Text(
+        text = stringResource(id = R.string.app_name),
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.h1,
+        color = MaterialTheme.colors.onPrimary,
+        modifier = Modifier.wrapContentSize()
+    )
 }
 
 @Preview(showBackground = false, showSystemUi = false, device = Devices.PIXEL_4_XL,

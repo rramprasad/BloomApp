@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
@@ -37,7 +38,7 @@ import dev.ramprasad.bloom.R
 import dev.ramprasad.bloom.ui.theme.BloomTheme
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(onLoginButtonClicked : () -> Unit) {
     Surface(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
@@ -56,7 +57,7 @@ fun LoginScreen() {
             Spacer(modifier = Modifier.size(8.dp))
             TermsOfUseText()
             Spacer(modifier = Modifier.size(16.dp))
-            LoginInButton()
+            LoginInButton(onLoginButtonClicked)
         }
     }
 }
@@ -79,6 +80,10 @@ fun EmailTextField() {
         mutableStateOf("")
     }
 
+    val errorOccured by rememberSaveable {
+        mutableStateOf(false)
+    }
+
     OutlinedTextField(
         value = email,
         onValueChange = {
@@ -86,6 +91,7 @@ fun EmailTextField() {
                 email = it
             }
         },
+        isError = errorOccured,
         placeholder = { Text(text = stringResource(id = R.string.email_address),color = MaterialTheme.colors.onPrimary)},
         enabled = true,
         modifier = Modifier
@@ -238,7 +244,8 @@ private fun launchInBrowser(
 }
 
 @Composable
-fun LoginInButton() {
+fun LoginInButton(onLoginButtonClicked : () -> Unit) {
+    val onLoginClicked by rememberUpdatedState(newValue = onLoginButtonClicked)
     Button(
         colors = ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colors.secondary,
@@ -246,7 +253,7 @@ fun LoginInButton() {
         ),
         shape = MaterialTheme.shapes.medium,
         onClick = {
-
+            onLoginClicked()
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -270,7 +277,7 @@ fun LoginInButton() {
 @Composable
 fun PreviewLightLoginScreen() {
     BloomTheme(false){
-        LoginScreen()
+        LoginScreen {}
     }
 }
 
@@ -283,6 +290,6 @@ fun PreviewLightLoginScreen() {
 @Composable
 fun PreviewDarkLoginScreen() {
     BloomTheme(true) {
-        LoginScreen()
+        LoginScreen{}
     }
 }

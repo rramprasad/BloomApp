@@ -4,9 +4,9 @@ Beautiful home garden solution Android app developed using latest Android UI too
 
 ## App Screens
 ## Light Theme
-<img src="results/screenshot_1.png" width="320" height="640"> <img src="results/screenshot_3.png" width="320" height="640">
+<img src="results/screenshot_01.png" width="320" height="640"> <img src="results/screenshot_03.png" width="320" height="640"> <img src="results/screenshot_05.png" width="320" height="640"> <img src="results/screenshot_07.png" width="320" height="640">
 ## Dark Theme
-<img src="results/screenshot_2.png" width="320" height="640"> <img src="results/screenshot_4.png" width="320" height="640">
+<img src="results/screenshot_02.png" width="320" height="640"> <img src="results/screenshot_04.png" width="320" height="640"> <img src="results/screenshot_06.png" width="320" height="640"> <img src="results/screenshot_08.png" width="320" height="640">
 
 
 
@@ -14,11 +14,12 @@ Beautiful home garden solution Android app developed using latest Android UI too
 Beautiful home garden solution Android app developed using latest Android UI tool Jetpack Compose and implemented most of the new Android APIs.
 
 ## Development IDE
-- Android Studio Arctic Fox | 2020.3.1 Canary 12
+- Android Studio Arctic Fox | 2020.3.1 Canary 14
 
 ## Latest Android libraries/components used:
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
 - [Jetpack Compose Navigation](https://developer.android.com/jetpack/compose/navigation)
+- [Coil Image Loading library with Accompanist](https://google.github.io/accompanist/coil/)
 
 ## Note
 This app is my demo application to explore all new Android features and APIs on my free time.
