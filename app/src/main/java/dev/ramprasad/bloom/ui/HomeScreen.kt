@@ -17,9 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,17 +25,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.transform.RoundedCornersTransformation
-import com.google.accompanist.coil.CoilImage
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
+import dev.ramprasad.bloom.HomeViewModel
 import dev.ramprasad.bloom.data.GardenTheme
 import dev.ramprasad.bloom.data.Plant
 import dev.ramprasad.bloom.R
 import dev.ramprasad.bloom.ui.theme.BloomTheme
 
 @Composable
-fun HomeScreen(gardenThemesList: List<GardenTheme>, plantsList: List<Plant>) {
+fun HomeScreen() {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,9 +51,9 @@ fun HomeScreen(gardenThemesList: List<GardenTheme>, plantsList: List<Plant>) {
             Spacer(modifier = Modifier.size(40.dp))
             SearchTextField()
             ThemesTitle()
-            ThemesList(gardenThemesList = gardenThemesList)
+            ThemesList()
             PlantsTitle()
-            PlantsList(plantsList = plantsList)
+            PlantsList()
         }
     }
 }
@@ -115,7 +114,10 @@ fun ThemesTitle() {
 }
 
 @Composable
-fun ThemesList(gardenThemesList : List<GardenTheme>) {
+fun ThemesList() {
+    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+    val gardenThemesList = homeViewModel.getGardenThemesList()
+
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -201,7 +203,10 @@ fun PlantsTitle() {
 }
 
 @Composable
-fun PlantsList(plantsList: List<Plant>) {
+fun PlantsList() {
+    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+    val plantsList = homeViewModel.getPlantsList()
+
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -313,11 +318,7 @@ fun PlantsList(plantsList: List<Plant>) {
 @Composable
 fun PreviewLightHomeScreen() {
     BloomTheme(false){
-        HomeScreen(arrayListOf(
-            GardenTheme(1, stringResource(R.string.desert_chic),"https://raw.githubusercontent.com/rramprasad/BloomAppAssets/main/Themes/theme1.jpg")
-        ), arrayListOf(
-            Plant(1, stringResource(R.string.monstera),"https://raw.githubusercontent.com/rramprasad/BloomAppAssets/main/Plants/plant1.jpg",stringResource(R.string.plant_description))
-        ))
+        HomeScreen()
     }
 }
 

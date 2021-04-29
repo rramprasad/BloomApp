@@ -25,17 +25,5 @@
     <string name="cart">Cart</string>
     <string name="search">Search</string>
     <string name="browse_themes">Browse themes</string>
-    <string name="desert_chic">Desert chic</string>
-    <string name="tiny_terrariums">Tiny terrariums</string>
-    <string name="jungle_vibes">Jungle vibes</string>
-    <string name="easy_care">Easy care</string>
-    <string name="statements">Statements</string>
-    <string name="monstera">Monstera</string>
-    <string name="aglaonema">Aglaonema</string>
-    <string name="peace_lily">Peace lily</string>
-    <string name="fiddle_leaf_tree">Fiddle leaf tree</string>
-    <string name="snake_plant">Snake plant</string>
-    <string name="pothos">Pothos</string>
-    <string name="plant_description">This is a description</string>
     <string name="design_your_home_garden">Design your home garden</string>
 </resources>
