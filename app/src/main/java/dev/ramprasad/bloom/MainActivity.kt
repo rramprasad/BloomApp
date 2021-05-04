@@ -105,7 +105,6 @@ class MainActivity : AppCompatActivity() {
         NavHost(navController = homeNavController, startDestination = Screen.HomeScreen.route) {
             composable(Screen.HomeScreen.route) {
                 val homeViewModel = hiltNavGraphViewModel<HomeViewModel>(backStackEntry = it)
-
                 HomeScreen(homeViewModel)
             }
 

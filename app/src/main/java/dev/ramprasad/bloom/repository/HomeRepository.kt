@@ -1,16 +1,16 @@
 package dev.ramprasad.bloom.repository
 
-import android.app.Application
+import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dev.ramprasad.bloom.database.RoomDatabaseHelper
 import dev.ramprasad.bloom.database.AppDatabase
 import dev.ramprasad.bloom.database.GardenTheme
 import dev.ramprasad.bloom.database.Plant
 import javax.inject.Inject
 
-class HomeRepository @Inject constructor(@ApplicationContext application: Application) {
+class HomeRepository @Inject constructor() {
 
-    var database: AppDatabase = RoomDatabaseHelper.getInstance(application.applicationContext)
+    @Inject
+    lateinit var database : AppDatabase
 
     suspend fun getGardenThemesList(): List<GardenTheme> {
         val gardenThemeDao = database.GardenThemeDao()

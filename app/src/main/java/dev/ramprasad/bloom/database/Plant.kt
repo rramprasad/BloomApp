@@ -3,9 +3,10 @@ package dev.ramprasad.bloom.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import javax.inject.Inject
 
 @Entity(tableName = "plant")
-data class Plant(
+data class Plant @Inject constructor(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "plant_id") val plantId : Int = 0,
     @ColumnInfo(name = "plant_name") val plantName : String,
     @ColumnInfo(name = "plant_image_url") val plantImageUrl : String,

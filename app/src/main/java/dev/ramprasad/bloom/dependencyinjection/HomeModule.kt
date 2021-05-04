@@ -1,4 +1,4 @@
-package dev.ramprasad.bloom
+package dev.ramprasad.bloom.dependencyinjection
 
 import android.app.Application
 import androidx.compose.runtime.ComposeCompilerApi
@@ -19,7 +19,7 @@ import dev.ramprasad.bloom.database.Plant
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object BloomHiltModule {
+object HomeModule {
 
     @Provides
     @ViewModelScoped
