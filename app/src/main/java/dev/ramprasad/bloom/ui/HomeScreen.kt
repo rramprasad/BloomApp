@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -25,18 +26,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
-import dev.ramprasad.bloom.HomeViewModel
-import dev.ramprasad.bloom.data.GardenTheme
-import dev.ramprasad.bloom.data.Plant
+import dev.ramprasad.bloom.viewmodel.HomeViewModel
 import dev.ramprasad.bloom.R
 import dev.ramprasad.bloom.ui.theme.BloomTheme
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(homeViewModel: HomeViewModel) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,9 +50,9 @@ fun HomeScreen() {
             Spacer(modifier = Modifier.size(40.dp))
             SearchTextField()
             ThemesTitle()
-            ThemesList()
+            ThemesList(homeViewModel)
             PlantsTitle()
-            PlantsList()
+            PlantsList(homeViewModel)
         }
     }
 }
@@ -114,75 +113,78 @@ fun ThemesTitle() {
 }
 
 @Composable
-fun ThemesList() {
-    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
-    val gardenThemesList = homeViewModel.getGardenThemesList()
-
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(136.dp)
-            .padding(16.dp, 0.dp, 0.dp, 0.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.Top,
-        contentPadding = PaddingValues(0.dp,0.dp),
-    ) {
-        items(
-            items = gardenThemesList,
-            key = { gardenTheme ->
-                gardenTheme.themeId
-            }
-        ){ gardenTheme ->
-            Card(
-                modifier = Modifier
-                    .width(136.dp)
-                    .fillMaxHeight(),
-                elevation = 2.dp,
-                backgroundColor = MaterialTheme.colors.surface,
-                shape = MaterialTheme.shapes.small
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.Top
+fun ThemesList(homeViewModel : HomeViewModel) {
+    //val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+    //val homeViewModel = hiltNavGraphViewModel<HomeViewModel>()
+    homeViewModel.loadGardenThemesList()
+    val gardenThemesList by homeViewModel.gardenThemesListLiveData.observeAsState()
+    gardenThemesList?.let {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(136.dp)
+                .padding(16.dp, 0.dp, 0.dp, 0.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.Top,
+            contentPadding = PaddingValues(0.dp,0.dp),
+        ) {
+            items(
+                items = it,
+                key = { gardenTheme ->
+                    gardenTheme.themeId
+                }
+            ){ gardenTheme ->
+                Card(
+                    modifier = Modifier
+                        .width(136.dp)
+                        .fillMaxHeight(),
+                    elevation = 2.dp,
+                    backgroundColor = MaterialTheme.colors.surface,
+                    shape = MaterialTheme.shapes.small
                 ) {
-                    val painter = rememberCoilPainter(
-                        gardenTheme.themeImageUrl,
-                        fadeIn = true
-                    )
-                    Image(
-                        painter = painter,
-                        contentScale = ContentScale.Crop,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(96.dp)
-                    )
-                    when(painter.loadState){
-                        ImageLoadState.Loading -> {
-                            Box(modifier = Modifier.fillMaxSize()) {
-                                CircularProgressIndicator(Modifier.align(Alignment.Center))
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.Top
+                    ) {
+                        val painter = rememberCoilPainter(
+                            gardenTheme.themeImageUrl,
+                            fadeIn = true
+                        )
+                        Image(
+                            painter = painter,
+                            contentScale = ContentScale.Crop,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(96.dp)
+                        )
+                        when(painter.loadState){
+                            ImageLoadState.Loading -> {
+                                Box(modifier = Modifier.fillMaxSize()) {
+                                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+                                }
+                            }
+                            is ImageLoadState.Error -> {
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_baseline_error_24),
+                                    contentDescription = null
+                                )
+                            }
+                            else -> {
+
                             }
                         }
-                        is ImageLoadState.Error -> {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_baseline_error_24),
-                                contentDescription = null
-                            )
-                        }
-                        else -> {
-
-                        }
+                        Text(
+                            text = gardenTheme.themeName,
+                            style = MaterialTheme.typography.h2,
+                            color = MaterialTheme.colors.onPrimary,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .align(Alignment.CenterHorizontally)
+                                .padding(16.dp, 8.dp, 16.dp, 8.dp)
+                        )
                     }
-                    Text(
-                        text = gardenTheme.themeName,
-                        style = MaterialTheme.typography.h2,
-                        color = MaterialTheme.colors.onPrimary,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.CenterHorizontally)
-                            .padding(16.dp, 8.dp, 16.dp, 8.dp)
-                    )
                 }
             }
         }
@@ -203,124 +205,127 @@ fun PlantsTitle() {
 }
 
 @Composable
-fun PlantsList() {
-    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
-    val plantsList = homeViewModel.getPlantsList()
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .background(Color.Transparent)
-            .padding(16.dp, 0.dp, 16.dp, 0.dp),
-        contentPadding = PaddingValues(0.dp,0.dp),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+fun PlantsList(homeViewModel: HomeViewModel) {
+    //val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+    //val homeViewModel = hiltNavGraphViewModel<HomeViewModel>()
+    homeViewModel.loadPlantsList()
+    val plantsList by homeViewModel.plantsListLiveData.observeAsState()
+    plantsList?.let {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .background(Color.Transparent)
+                .padding(16.dp, 0.dp, 16.dp, 0.dp),
+            contentPadding = PaddingValues(0.dp,0.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-        items(
-            items = plantsList,
-            key = { plant ->
-                plant.plantId
-            }
-        ){ plant ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.Top,
-            ) {
-                val painter = rememberCoilPainter(
-                    plant.plantImageUrl,
-                    fadeIn = true,
-                    requestBuilder = { transformations(RoundedCornersTransformation(4F,4F,4F,4F))}
-                )
-                Image(
-                    painter = painter,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .width(64.dp)
-                        .height(64.dp)
-                )
-                when(painter.loadState){
-                    ImageLoadState.Loading -> {
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            CircularProgressIndicator(Modifier.align(Alignment.Center))
-                        }
-                    }
-                    is ImageLoadState.Error -> {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_baseline_error_24),
-                            contentDescription = null
-                        )
-                    }
-                    else -> {
-
-                    }
+            items(
+                items = it,
+                key = { plant ->
+                    plant.plantId
                 }
-                Column {
-                    Row(
+            ){ plant ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(64.dp),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Top,
+                ) {
+                    val painter = rememberCoilPainter(
+                        plant.plantImageUrl,
+                        fadeIn = true,
+                        requestBuilder = { transformations(RoundedCornersTransformation(4F,4F,4F,4F))}
+                    )
+                    Image(
+                        painter = painter,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(0.98F)
-                    ){
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth(0.9F)
-                                .fillMaxHeight()
-                                .padding(16.dp, 0.dp, 16.dp, 0.dp),
-                            horizontalAlignment = Alignment.Start,
-                            verticalArrangement = Arrangement.Top
-                        ) {
-                            Text(
-                                text = plant.plantName,
-                                style = MaterialTheme.typography.h2,
-                                color = MaterialTheme.colors.onPrimary,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .paddingFromBaseline(24.dp, 0.dp)
-                            )
-                            Text(
-                                text = plant.plantDescription,
-                                style = MaterialTheme.typography.body1,
-                                color = MaterialTheme.colors.onPrimary,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .paddingFromBaseline(0.dp, 24.dp)
+                            .width(64.dp)
+                            .height(64.dp)
+                    )
+                    when(painter.loadState){
+                        ImageLoadState.Loading -> {
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                CircularProgressIndicator(Modifier.align(Alignment.Center))
+                            }
+                        }
+                        is ImageLoadState.Error -> {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_baseline_error_24),
+                                contentDescription = null
                             )
                         }
-                        Checkbox(
-                            checked = false,
-                            onCheckedChange = {},
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .align(Alignment.CenterVertically)
-                        )
-                    }
+                        else -> {
 
-                    Divider(modifier = Modifier
-                        .fillMaxWidth(0.95F)
-                        .align(Alignment.CenterHorizontally))
+                        }
+                    }
+                    Column {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.98F)
+                        ){
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9F)
+                                    .fillMaxHeight()
+                                    .padding(16.dp, 0.dp, 16.dp, 0.dp),
+                                horizontalAlignment = Alignment.Start,
+                                verticalArrangement = Arrangement.Top
+                            ) {
+                                Text(
+                                    text = plant.plantName,
+                                    style = MaterialTheme.typography.h2,
+                                    color = MaterialTheme.colors.onPrimary,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .paddingFromBaseline(24.dp, 0.dp)
+                                )
+                                Text(
+                                    text = plant.plantDescription,
+                                    style = MaterialTheme.typography.body1,
+                                    color = MaterialTheme.colors.onPrimary,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .paddingFromBaseline(0.dp, 24.dp)
+                                )
+                            }
+                            Checkbox(
+                                checked = false,
+                                onCheckedChange = {},
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .align(Alignment.CenterVertically)
+                            )
+                        }
+
+                        Divider(modifier = Modifier
+                            .fillMaxWidth(0.95F)
+                            .align(Alignment.CenterHorizontally))
+                    }
                 }
             }
         }
     }
 }
 
-@Preview(
+/*@Preview(
     device = Devices.PIXEL_4_XL,
     uiMode = Configuration.UI_MODE_TYPE_NORMAL,
     widthDp = 360, heightDp = 640,
     name = "BasePreview"
-)
+)*/
 
-@Composable
+/*@Composable
 fun PreviewLightHomeScreen() {
     BloomTheme(false){
-        HomeScreen()
+        HomeScreen(homeViewModel)
     }
-}
+}*/
 
 /*
 @ExperimentalMaterialApi

@@ -1,22 +1,16 @@
-package dev.ramprasad.bloom
+package dev.ramprasad.bloom.database
 
 import android.content.Context
-import androidx.compose.ui.res.stringResource
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import dev.ramprasad.bloom.data.AppDatabase
-import dev.ramprasad.bloom.data.GardenTheme
-import dev.ramprasad.bloom.data.Plant
-import dev.ramprasad.bloom.data.User
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 object RoomDatabaseHelper {
 
     fun getInstance(context: Context): AppDatabase {
-        return Room.databaseBuilder(context,AppDatabase::class.java,"bloom-app-db")
+        return Room.databaseBuilder(context, AppDatabase::class.java,"bloom-app-db")
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)

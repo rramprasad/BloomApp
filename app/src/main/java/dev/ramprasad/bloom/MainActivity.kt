@@ -15,16 +15,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.google.accompanist.insets.ExperimentalAnimatedInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
-import dev.ramprasad.bloom.data.GardenTheme
-import dev.ramprasad.bloom.data.Plant
+import dagger.hilt.android.AndroidEntryPoint
 import dev.ramprasad.bloom.ui.*
 import dev.ramprasad.bloom.ui.theme.BloomTheme
+import dev.ramprasad.bloom.viewmodel.HomeViewModel
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     @ExperimentalAnimatedInsets
@@ -102,7 +104,9 @@ class MainActivity : AppCompatActivity() {
     private fun HomeNavigation(homeNavController: NavHostController) {
         NavHost(navController = homeNavController, startDestination = Screen.HomeScreen.route) {
             composable(Screen.HomeScreen.route) {
-                HomeScreen()
+                val homeViewModel = hiltNavGraphViewModel<HomeViewModel>(backStackEntry = it)
+
+                HomeScreen(homeViewModel)
             }
 
             composable(Screen.FavoritesScreen.route) {

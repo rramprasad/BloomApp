@@ -1,0 +1,24 @@
+package dev.ramprasad.bloom.repository
+
+import android.app.Application
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.ramprasad.bloom.database.RoomDatabaseHelper
+import dev.ramprasad.bloom.database.AppDatabase
+import dev.ramprasad.bloom.database.GardenTheme
+import dev.ramprasad.bloom.database.Plant
+import javax.inject.Inject
+
+class HomeRepository @Inject constructor(@ApplicationContext application: Application) {
+
+    var database: AppDatabase = RoomDatabaseHelper.getInstance(application.applicationContext)
+
+    suspend fun getGardenThemesList(): List<GardenTheme> {
+        val gardenThemeDao = database.GardenThemeDao()
+        return gardenThemeDao.getAll()
+    }
+
+    suspend fun getPlantsList(): List<Plant> {
+        val plantDao = database.PlantDao()
+        return plantDao.getAll()
+    }
+}

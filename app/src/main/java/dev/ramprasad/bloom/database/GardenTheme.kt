@@ -1,4 +1,4 @@
-package dev.ramprasad.bloom.data
+package dev.ramprasad.bloom.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
