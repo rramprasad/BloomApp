@@ -4,15 +4,20 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.ramprasad.bloom.database.*
+import dev.ramprasad.bloom.database.AppDatabase
+import dev.ramprasad.bloom.database.GardenTheme
+import dev.ramprasad.bloom.database.Plant
+import dev.ramprasad.bloom.database.User
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
@@ -29,6 +34,12 @@ class AppModule {
                 }
             })
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return Firebase.auth
     }
 
     private fun prePopulateDatabase(applicationContext: Context) {

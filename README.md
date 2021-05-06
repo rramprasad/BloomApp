@@ -25,7 +25,7 @@ Beautiful home garden solution Android app developed using latest Android UI too
 - [Lottie Animation with Jetpack Compose](https://airbnb.io/lottie/#/android-compose)
 
 ## App Architecture
-- [Unidirectional data flow(UDF) Architecture] (https://developer.android.com/jetpack/compose/architecture#udf)
+- [Unidirectional data flow(UDF) Architecture](https://developer.android.com/jetpack/compose/architecture#udf)
 <img src="https://developer.android.com/images/jetpack/compose/state-unidirectional-flow.png" width="429" height="527">
 
 ## BackEnd Server

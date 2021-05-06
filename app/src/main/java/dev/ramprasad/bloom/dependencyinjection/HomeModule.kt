@@ -1,19 +1,11 @@
 package dev.ramprasad.bloom.dependencyinjection
 
-import android.app.Application
-import androidx.compose.runtime.ComposeCompilerApi
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.internal.managers.ApplicationComponentManager
-import dagger.hilt.android.internal.modules.ApplicationContextModule
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
-import dagger.hilt.components.SingletonComponent
 import dev.ramprasad.bloom.database.GardenTheme
 import dev.ramprasad.bloom.database.Plant
 

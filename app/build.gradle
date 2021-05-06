@@ -7,12 +7,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion "android-S"
 
     defaultConfig {
         applicationId "dev.ramprasad.bloom"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion "S"
         versionCode 1
         versionName "1.0"
 
@@ -117,6 +117,10 @@ dependencies {
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha01'
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
     kapt "androidx.hilt:hilt-compiler:1.0.0-beta01"
+
+    //Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
 
     testImplementation 'junit:junit:4.13.2'

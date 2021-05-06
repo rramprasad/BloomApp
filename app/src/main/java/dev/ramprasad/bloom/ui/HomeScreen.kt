@@ -1,6 +1,5 @@
 package dev.ramprasad.bloom.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,16 +22,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
-import dev.ramprasad.bloom.viewmodel.HomeViewModel
 import dev.ramprasad.bloom.R
-import dev.ramprasad.bloom.ui.theme.BloomTheme
+import dev.ramprasad.bloom.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel) {
