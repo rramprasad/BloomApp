@@ -1,5 +1,6 @@
 package dev.ramprasad.bloom.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +23,20 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var plantsListLiveData:MutableLiveData<List<Plant>>
 
+    @Inject
+    lateinit var emailLiveData: MutableLiveData<String>
+
+    @Inject
+    lateinit var passwordLiveData: MutableLiveData<String>
+
+    fun onEmailChange(newEmail:String) {
+        emailLiveData.value = newEmail
+    }
+
+    fun onPasswordChange(newPassword : String) {
+        passwordLiveData.postValue(newPassword)
+    }
+
     fun loadGardenThemesList() {
         viewModelScope.launch {
             val gardenThemesList = homeRepository.getGardenThemesList()
@@ -33,6 +48,12 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             val plantsList = homeRepository.getPlantsList()
             plantsListLiveData.postValue(plantsList)
+        }
+    }
+
+    fun onLogin() {
+        viewModelScope.launch {
+            val loginResult = homeRepository.login(emailLiveData.value,passwordLiveData.value)
         }
     }
 }

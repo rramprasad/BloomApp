@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,8 +24,10 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.ramprasad.bloom.R
 import dev.ramprasad.bloom.ui.theme.BloomTheme
+import dev.ramprasad.bloom.viewmodel.HomeViewModel
 
 @Composable
 fun LoginScreen(onLoginButtonClicked : () -> Unit) {
@@ -65,9 +68,12 @@ fun LoginTitle() {
 
 @Composable
 fun EmailTextField() {
-    var email by rememberSaveable {
+    /*var email by rememberSaveable {
         mutableStateOf("")
-    }
+    }*/
+
+    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+    val email by homeViewModel.emailLiveData.observeAsState(initial = "")
 
     val errorOccured by rememberSaveable {
         mutableStateOf(false)
@@ -77,7 +83,8 @@ fun EmailTextField() {
         value = email,
         onValueChange = {
             if(it.length < 50){
-                email = it
+                //email = it
+                homeViewModel.onEmailChange(newEmail = it)
             }
         },
         isError = errorOccured,
@@ -103,15 +110,19 @@ fun EmailTextField() {
 
 @Composable
 fun PasswordTextField() {
-    var password by rememberSaveable {
+    /*var password by rememberSaveable {
         mutableStateOf("")
-    }
+    }*/
+
+    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+    val password:String by homeViewModel.passwordLiveData.observeAsState("")
 
     OutlinedTextField(
         value = password,
         onValueChange = {
             if(it.length < 50) {
-                password = it
+                //password = it
+                homeViewModel.onPasswordChange(it)
             }
         },
         placeholder = { Text(text = stringResource(id = R.string.password),color = MaterialTheme.colors.onPrimary)},
@@ -234,6 +245,7 @@ private fun launchInBrowser(
 
 @Composable
 fun LoginInButton(onLoginButtonClicked : () -> Unit) {
+    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
     val onLoginClicked by rememberUpdatedState(newValue = onLoginButtonClicked)
     Button(
         colors = ButtonDefaults.buttonColors(
@@ -242,7 +254,8 @@ fun LoginInButton(onLoginButtonClicked : () -> Unit) {
         ),
         shape = MaterialTheme.shapes.medium,
         onClick = {
-            onLoginClicked()
+            //onLoginClicked()
+            homeViewModel.onLogin()
         },
         modifier = Modifier
             .fillMaxWidth()

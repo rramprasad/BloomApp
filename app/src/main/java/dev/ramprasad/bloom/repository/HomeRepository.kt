@@ -20,4 +20,8 @@ class HomeRepository @Inject constructor() {
         val plantDao = database.PlantDao()
         return plantDao.getAll()
     }
+
+    suspend fun login(email: String?, password: String?): Boolean {
+        return true
+    }
 }

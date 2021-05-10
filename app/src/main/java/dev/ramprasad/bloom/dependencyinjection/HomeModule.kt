@@ -25,6 +25,12 @@ object HomeModule {
         return MutableLiveData<List<Plant>>()
     }
 
+    @Provides
+    @ViewModelScoped
+    fun provideStringLiveData(): MutableLiveData<String> {
+        return MutableLiveData<String>()
+    }
+
     /*@Provides
     @ViewModelScoped
     fun <T> provideLiveData(): MutableLiveData<T> {
