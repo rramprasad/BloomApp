@@ -38,6 +38,9 @@ Beautiful home garden solution Android app developed using latest Android UI too
 - This app is my demo application to explore all new Android features and APIs on my free time.
 - Complete app developed with one single Activity
 - Complete app developed without using traditional UI fragments and XML layouts
+- No Fragments
+- No XML
+- No Data binding
 
 ## License
 ```
