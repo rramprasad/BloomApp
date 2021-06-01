@@ -133,7 +133,7 @@ private fun BottomNavigation(homeNavController: NavHostController) {
         contentColor = MaterialTheme.colors.onPrimary,
         content = {
             val homeNavBackStackEntry by homeNavController.currentBackStackEntryAsState()
-            val currentRoute = homeNavBackStackEntry?.arguments?.getString(KEY_ROUTE)
+            val currentRoute = homeNavBackStackEntry?.destination?.route
 
             BottomNavigationItem(
                 icon = {
@@ -143,7 +143,7 @@ private fun BottomNavigation(homeNavController: NavHostController) {
                 selected = currentRoute == Screen.HomeScreen.route,
                 onClick = {
                     homeNavController.navigate(Screen.HomeScreen.route){
-                        popUpTo = homeNavController.graph.startDestination
+                        popUpTo = homeNavController.graph.startDestinationId
                         launchSingleTop = true
                     }
                 },
@@ -163,7 +163,7 @@ private fun BottomNavigation(homeNavController: NavHostController) {
                 selected = currentRoute == Screen.FavoritesScreen.route,
                 onClick = {
                     homeNavController.navigate(Screen.FavoritesScreen.route){
-                        popUpTo = homeNavController.graph.startDestination
+                        popUpTo = homeNavController.graph.startDestinationId
                         launchSingleTop = true
                     }
                 },
@@ -183,7 +183,7 @@ private fun BottomNavigation(homeNavController: NavHostController) {
                 selected = currentRoute == Screen.UserProfileScreen.route,
                 onClick = {
                     homeNavController.navigate(Screen.UserProfileScreen.route){
-                        popUpTo = homeNavController.graph.startDestination
+                        popUpTo = homeNavController.graph.startDestinationId
                         launchSingleTop = true
                     }
                 },
@@ -203,7 +203,7 @@ private fun BottomNavigation(homeNavController: NavHostController) {
                 selected = currentRoute == Screen.CartScreen.route,
                 onClick = {
                     homeNavController.navigate(Screen.CartScreen.route){
-                        popUpTo = homeNavController.graph.startDestination
+                        popUpTo = homeNavController.graph.startDestinationId
                         launchSingleTop = true
                     }
                 },
