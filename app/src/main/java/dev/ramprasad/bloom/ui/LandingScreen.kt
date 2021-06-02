@@ -1,3 +1,9 @@
+/*
+ * Created by Ramprasad Ranganathan on 02/06/21, 2:07 PM
+ * Copyright (c) 2021. All rights reserved
+ * Last modified 02/06/21, 1:26 PM
+ */
+
 package dev.ramprasad.bloom.ui
 
 import android.content.res.Configuration
@@ -67,13 +73,15 @@ fun LoadLottieAnimation(rememberedOnTimeout: () -> Unit) {
 
 @Composable
 fun AppName(rememberedAppNameVisibility: Boolean) {
-    Text(
-        text = stringResource(id = R.string.app_name),
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.h1,
-        color = MaterialTheme.colors.onPrimary,
-        modifier = Modifier.wrapContentSize()
-    )
+    if(rememberedAppNameVisibility){
+        Text(
+            text = stringResource(id = R.string.app_name),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h1,
+            color = MaterialTheme.colors.onPrimary,
+            modifier = Modifier.wrapContentSize()
+        )
+    }
 }
 
 @Preview(showBackground = false, showSystemUi = false, device = Devices.PIXEL_4_XL,
