@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.google.accompanist.insets.ExperimentalAnimatedInsets
@@ -111,7 +112,7 @@ class MainActivity : AppCompatActivity() {
     private fun HomeNavigation(homeNavController: NavHostController) {
         NavHost(navController = homeNavController, startDestination = Screen.HomeScreen.route) {
             composable(Screen.HomeScreen.route) {
-                val homeViewModel = hiltNavGraphViewModel<HomeViewModel>(backStackEntry = it)
+                val homeViewModel = hiltViewModel<HomeViewModel>(backStackEntry = it)
                 HomeScreen(homeViewModel)
             }
 

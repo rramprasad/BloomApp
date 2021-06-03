@@ -4,9 +4,9 @@ Beautiful home garden solution Android app developed using latest Android UI too
 
 ## App Screens
 ## Light Theme
-<img src="results/screenshot_01.png" width="320" height="640"> <img src="results/screenshot_03.png" width="320" height="640"> <img src="results/screenshot_05.png" width="320" height="640"> <img src="results/screenshot_07.png" width="320" height="640">
+<img src="screenshots/screenshot_01.png" width="320" height="640"> <img src="screenshots/screenshot_03.png" width="320" height="640"> <img src="screenshots/screenshot_05.png" width="320" height="640"> <img src="screenshots/screenshot_07.png" width="320" height="640">
 ## Dark Theme
-<img src="results/screenshot_02.png" width="320" height="640"> <img src="results/screenshot_04.png" width="320" height="640"> <img src="results/screenshot_06.png" width="320" height="640"> <img src="results/screenshot_08.png" width="320" height="640">
+<img src="screenshots/screenshot_02.png" width="320" height="640"> <img src="screenshots/screenshot_04.png" width="320" height="640"> <img src="screenshots/screenshot_06.png" width="320" height="640"> <img src="screenshots/screenshot_08.png" width="320" height="640">
 
 ## Introduction
 Beautiful home garden solution Android app developed using latest Android UI tool Jetpack Compose and implemented most of the new Android APIs.

@@ -10,6 +10,10 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class BloomApp : Application()
+class BloomApp : Application(){
+    override fun onCreate() {
+        super.onCreate()
+    }
+}
 
 

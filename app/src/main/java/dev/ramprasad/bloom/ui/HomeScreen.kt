@@ -75,7 +75,10 @@ fun SearchTextField() {
         },
         isError = errorOccured,
         placeholder = {
-            Text(text = stringResource(id = R.string.search), color = MaterialTheme.colors.onPrimary)
+            Text(
+                text = stringResource(id = R.string.search),
+                color = MaterialTheme.colors.onPrimary
+            )
         },
         leadingIcon = {
             painterResource(id = R.drawable.ic_baseline_search_24)
@@ -114,7 +117,7 @@ fun ThemesTitle() {
 }
 
 @Composable
-fun ThemesList(homeViewModel : HomeViewModel) {
+fun ThemesList(homeViewModel: HomeViewModel) {
     //val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
     //val homeViewModel = hiltNavGraphViewModel<HomeViewModel>()
     homeViewModel.loadGardenThemesList()
@@ -127,14 +130,14 @@ fun ThemesList(homeViewModel : HomeViewModel) {
                 .padding(16.dp, 0.dp, 0.dp, 0.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.Top,
-            contentPadding = PaddingValues(0.dp,0.dp),
+            contentPadding = PaddingValues(0.dp, 0.dp),
         ) {
             items(
                 items = it,
                 key = { gardenTheme ->
                     gardenTheme.themeId
                 }
-            ){ gardenTheme ->
+            ) { gardenTheme ->
                 Card(
                     modifier = Modifier
                         .width(136.dp)
@@ -160,8 +163,8 @@ fun ThemesList(homeViewModel : HomeViewModel) {
                                 .fillMaxWidth()
                                 .height(96.dp)
                         )
-                        when(painter.loadState){
-                            ImageLoadState.Loading -> {
+                        when (painter.loadState) {
+                            is ImageLoadState.Loading -> {
                                 Box(modifier = Modifier.fillMaxSize()) {
                                     CircularProgressIndicator(Modifier.align(Alignment.Center))
                                 }
@@ -218,7 +221,7 @@ fun PlantsList(homeViewModel: HomeViewModel) {
                 .fillMaxHeight()
                 .background(Color.Transparent)
                 .padding(16.dp, 0.dp, 16.dp, 0.dp),
-            contentPadding = PaddingValues(0.dp,0.dp),
+            contentPadding = PaddingValues(0.dp, 0.dp),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
@@ -227,7 +230,7 @@ fun PlantsList(homeViewModel: HomeViewModel) {
                 key = { plant ->
                     plant.plantId
                 }
-            ){ plant ->
+            ) { plant ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -238,7 +241,16 @@ fun PlantsList(homeViewModel: HomeViewModel) {
                     val painter = rememberCoilPainter(
                         plant.plantImageUrl,
                         fadeIn = true,
-                        requestBuilder = { transformations(RoundedCornersTransformation(4F,4F,4F,4F))}
+                        requestBuilder = {
+                            transformations(
+                                RoundedCornersTransformation(
+                                    4F,
+                                    4F,
+                                    4F,
+                                    4F
+                                )
+                            )
+                        }
                     )
                     Image(
                         painter = painter,
@@ -248,8 +260,8 @@ fun PlantsList(homeViewModel: HomeViewModel) {
                             .width(64.dp)
                             .height(64.dp)
                     )
-                    when(painter.loadState){
-                        ImageLoadState.Loading -> {
+                    when (painter.loadState) {
+                        is ImageLoadState.Loading -> {
                             Box(modifier = Modifier.fillMaxSize()) {
                                 CircularProgressIndicator(Modifier.align(Alignment.Center))
                             }
@@ -269,7 +281,7 @@ fun PlantsList(homeViewModel: HomeViewModel) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .fillMaxHeight(0.98F)
-                        ){
+                        ) {
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth(0.9F)
@@ -304,16 +316,17 @@ fun PlantsList(homeViewModel: HomeViewModel) {
                             )
                         }
 
-                        Divider(modifier = Modifier
-                            .fillMaxWidth(0.95F)
-                            .align(Alignment.CenterHorizontally))
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth(0.95F)
+                                .align(Alignment.CenterHorizontally)
+                        )
                     }
                 }
             }
         }
     }
 }
-
 /*@Preview(
     device = Devices.PIXEL_4_XL,
     uiMode = Configuration.UI_MODE_TYPE_NORMAL,
