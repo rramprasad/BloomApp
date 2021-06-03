@@ -3,7 +3,7 @@
  * Copyright (c) 2021. All rights reserved
  * Last modified 01/06/21, 2:45 PM
  */
-package dev.ramprasad.bloom.ui.theme
+package dev.ramprasad.bloom.theme
 
 import androidx.compose.ui.graphics.Color
 

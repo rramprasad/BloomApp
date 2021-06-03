@@ -21,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
@@ -30,8 +29,10 @@ import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.ramprasad.bloom.ui.*
-import dev.ramprasad.bloom.ui.theme.BloomTheme
-import dev.ramprasad.bloom.viewmodel.HomeViewModel
+import dev.ramprasad.bloom.theme.BloomTheme
+import dev.ramprasad.bloom.feature.home.HomeViewModel
+import dev.ramprasad.bloom.feature.login.LoginViewModel
+import dev.ramprasad.bloom.utils.Screen
 
 
 @AndroidEntryPoint
@@ -75,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             composable(Screen.LoginScreen.route) {
+                //val loginViewModel = hiltViewModel<LoginViewModel>(backStackEntry = it)
                 LoginScreen {
                     navController.navigate(Screen.HomeBaseScreen.route)
                 }

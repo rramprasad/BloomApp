@@ -33,7 +33,7 @@ import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
 import dev.ramprasad.bloom.R
-import dev.ramprasad.bloom.viewmodel.HomeViewModel
+import dev.ramprasad.bloom.feature.home.HomeViewModel
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel) {

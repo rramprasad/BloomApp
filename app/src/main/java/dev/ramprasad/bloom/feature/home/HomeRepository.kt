@@ -4,7 +4,7 @@
  * Last modified 01/06/21, 2:45 PM
  */
 
-package dev.ramprasad.bloom.repository
+package dev.ramprasad.bloom.feature.home
 
 import dev.ramprasad.bloom.database.AppDatabase
 import dev.ramprasad.bloom.database.GardenTheme
@@ -25,9 +25,5 @@ class HomeRepository @Inject constructor() {
     suspend fun getPlantsList(): List<Plant> {
         val plantDao = database.PlantDao()
         return plantDao.getAll()
-    }
-
-    suspend fun login(email: String?, password: String?): Boolean {
-        return true
     }
 }

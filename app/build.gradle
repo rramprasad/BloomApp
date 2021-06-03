@@ -124,7 +124,7 @@ dependencies {
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
 
     //Firebase BoM
-    implementation platform("com.google.firebase:firebase-bom:27.1.0")
+    implementation platform("com.google.firebase:firebase-bom:28.0.1")
     implementation "com.google.firebase:firebase-auth-ktx"
 
     // Testing

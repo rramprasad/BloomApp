@@ -23,7 +23,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieAnimationSpec
 import com.airbnb.lottie.compose.rememberLottieAnimationState
 import dev.ramprasad.bloom.R
-import dev.ramprasad.bloom.ui.theme.BloomTheme
+import dev.ramprasad.bloom.theme.BloomTheme
 
 private const val LOG_TAG: String = "LandingScreen"
 

@@ -10,13 +10,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,13 +30,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.ramprasad.bloom.R
-import dev.ramprasad.bloom.ui.theme.BloomTheme
-import dev.ramprasad.bloom.viewmodel.HomeViewModel
+import dev.ramprasad.bloom.theme.BloomTheme
+import dev.ramprasad.bloom.feature.login.LoginViewModel
 
 @Composable
-fun LoginScreen(onLoginButtonClicked : () -> Unit) {
+fun LoginScreen(loginViewModel:LoginViewModel = hiltViewModel(),onLoginSuccess: () -> Unit) {
     Surface(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
@@ -49,13 +50,33 @@ fun LoginScreen(onLoginButtonClicked : () -> Unit) {
         ) {
             LoginTitle()
             Spacer(modifier = Modifier.size(16.dp))
-            EmailTextField()
+            val emailState = rememberSaveable {
+                mutableStateOf("")
+            }
+            EmailTextField(emailState)
             Spacer(modifier = Modifier.size(8.dp))
-            PasswordTextField()
+
+            val passwordState = rememberSaveable {
+                mutableStateOf("")
+            }
+            PasswordTextField(passwordState)
             Spacer(modifier = Modifier.size(8.dp))
             TermsOfUseText()
             Spacer(modifier = Modifier.size(16.dp))
-            LoginInButton(onLoginButtonClicked)
+            val currentContext = LocalContext.current
+            LoginInButton{
+                if(emailState.value.isNotEmpty() && passwordState.value.isNotEmpty()) {
+                    loginViewModel.onLogin(emailState.value, passwordState.value)
+                }
+            }
+
+            if(loginViewModel.loginResultState.value == true){
+                Toast.makeText(currentContext, "Login SUCCESS", Toast.LENGTH_SHORT).show()
+                onLoginSuccess()
+            }
+            else{
+                Toast.makeText(currentContext, "Login FAILED", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
@@ -73,24 +94,15 @@ fun LoginTitle() {
 }
 
 @Composable
-fun EmailTextField() {
-    /*var email by rememberSaveable {
-        mutableStateOf("")
-    }*/
-
-    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
-    val email by homeViewModel.emailLiveData.observeAsState(initial = "")
-
+fun EmailTextField(emailState: MutableState<String>) {
     val errorOccured by rememberSaveable {
         mutableStateOf(false)
     }
-
     OutlinedTextField(
-        value = email,
+        value = emailState.value,
         onValueChange = {
             if(it.length < 50){
-                //email = it
-                homeViewModel.onEmailChange(newEmail = it)
+                emailState.value = it
             }
         },
         isError = errorOccured,
@@ -115,20 +127,12 @@ fun EmailTextField() {
 }
 
 @Composable
-fun PasswordTextField() {
-    /*var password by rememberSaveable {
-        mutableStateOf("")
-    }*/
-
-    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
-    val password:String by homeViewModel.passwordLiveData.observeAsState("")
-
+fun PasswordTextField(passwordState: MutableState<String>) {
     OutlinedTextField(
-        value = password,
+        value = passwordState.value,
         onValueChange = {
             if(it.length < 50) {
-                //password = it
-                homeViewModel.onPasswordChange(it)
+                passwordState.value = it
             }
         },
         placeholder = { Text(text = stringResource(id = R.string.password),color = MaterialTheme.colors.onPrimary)},
@@ -251,8 +255,8 @@ private fun launchInBrowser(
 
 @Composable
 fun LoginInButton(onLoginButtonClicked : () -> Unit) {
-    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
-    val onLoginClicked by rememberUpdatedState(newValue = onLoginButtonClicked)
+    //val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+    //val onLoginClicked by rememberUpdatedState(newValue = onLoginButtonClicked)
     Button(
         colors = ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colors.secondary,
@@ -261,7 +265,8 @@ fun LoginInButton(onLoginButtonClicked : () -> Unit) {
         shape = MaterialTheme.shapes.medium,
         onClick = {
             //onLoginClicked()
-            homeViewModel.onLogin()
+            onLoginButtonClicked()
+            //loginViewModel.onLogin()
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -285,7 +290,9 @@ fun LoginInButton(onLoginButtonClicked : () -> Unit) {
 @Composable
 fun PreviewLightLoginScreen() {
     BloomTheme(false){
-        LoginScreen {}
+        LoginScreen(){
+
+        }
     }
 }
 
@@ -298,6 +305,8 @@ fun PreviewLightLoginScreen() {
 @Composable
 fun PreviewDarkLoginScreen() {
     BloomTheme(true) {
-        LoginScreen{}
+        LoginScreen(){
+
+        }
     }
 }
