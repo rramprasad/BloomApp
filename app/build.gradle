@@ -82,7 +82,6 @@ android {
         excludes += "/META-INF/AL2.0"
         excludes += "/META-INF/LGPL2.1"
     }
-    buildToolsVersion '31.0.0 rc4'
 }
 
 dependencies {
@@ -144,7 +143,3 @@ dependencies {
     testImplementation 'com.google.dagger:hilt-android-testing:2.36'
     kaptTest 'com.google.dagger:hilt-compiler:2.36'
 }
-/*
-repositories {
-    mavenCentral()
-}*/
