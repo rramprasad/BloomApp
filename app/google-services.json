@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "397913584455",
+    "project_id": "bloomapp-8935c",
+    "storage_bucket": "bloomapp-8935c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397913584455:android:4532f5694e6c69d6cbd262",
+        "android_client_info": {
+          "package_name": "dev.ramprasad.bloom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "397913584455-kinrn0vgra60eos669sprmsl3acj1aib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgfyv3l1oMToHftJAExem_UyAZ4OlqdgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "397913584455-kinrn0vgra60eos669sprmsl3acj1aib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
