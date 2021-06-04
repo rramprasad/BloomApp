@@ -19,6 +19,7 @@ Beautiful home garden solution Android app developed using latest Android UI too
 - [Jetpack Compose Navigation](https://developer.android.com/jetpack/compose/navigation)
 - [Bottom Navigation Bar](https://developer.android.com/jetpack/compose/navigation#bottom-nav)
 - [Architecture Componenets ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
+- [StateFlow](https://developer.android.com/kotlin/flow/stateflow-and-sharedflow)
 - [Hilt Dependency Injection](https://developer.android.com/training/dependency-injection/hilt-android)
 - [Room Database](https://developer.android.com/training/data-storage/room)
 - [Coil Image Loading library with Accompanist](https://google.github.io/accompanist/coil/)

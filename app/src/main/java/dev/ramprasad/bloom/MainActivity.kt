@@ -33,11 +33,13 @@ import dev.ramprasad.bloom.theme.BloomTheme
 import dev.ramprasad.bloom.feature.home.HomeViewModel
 import dev.ramprasad.bloom.feature.login.LoginViewModel
 import dev.ramprasad.bloom.utils.Screen
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    @ExperimentalCoroutinesApi
     @ExperimentalAnimatedInsets
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @ExperimentalCoroutinesApi
     @Composable
     private fun AppMainNavigation() {
         val navController = rememberNavController()
@@ -76,7 +79,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             composable(Screen.LoginScreen.route) {
-                //val loginViewModel = hiltViewModel<LoginViewModel>(backStackEntry = it)
                 LoginScreen {
                     navController.navigate(Screen.HomeBaseScreen.route)
                 }

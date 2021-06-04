@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,11 +33,15 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.ramprasad.bloom.R
 import dev.ramprasad.bloom.theme.BloomTheme
 import dev.ramprasad.bloom.feature.login.LoginViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 
+@ExperimentalCoroutinesApi
 @Composable
 fun LoginScreen(loginViewModel:LoginViewModel = hiltViewModel(),onLoginSuccess: () -> Unit) {
     Surface(modifier = Modifier
@@ -43,6 +49,7 @@ fun LoginScreen(loginViewModel:LoginViewModel = hiltViewModel(),onLoginSuccess: 
         .fillMaxHeight()
         .background(MaterialTheme.colors.background)
     ) {
+        Log.d("compose", "LoginScreen compose: entered")
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
@@ -65,16 +72,22 @@ fun LoginScreen(loginViewModel:LoginViewModel = hiltViewModel(),onLoginSuccess: 
             Spacer(modifier = Modifier.size(16.dp))
             val currentContext = LocalContext.current
             LoginInButton{
+                Log.d("compose", "Login clicked")
                 if(emailState.value.isNotEmpty() && passwordState.value.isNotEmpty()) {
+                    Log.d("compose", "before login")
                     loginViewModel.onLogin(emailState.value, passwordState.value)
                 }
             }
 
-            if(loginViewModel.loginResultState.value == true){
+            Log.d("compose", "before loginResultState observe")
+            val loginSuccess = loginViewModel.loginResultState.collectAsState().value
+            if(loginSuccess){
+                Log.d("compose", "loginSuccess $loginSuccess")
                 Toast.makeText(currentContext, "Login SUCCESS", Toast.LENGTH_SHORT).show()
                 onLoginSuccess()
             }
             else{
+                Log.d("compose", "loginSuccess $loginSuccess")
                 Toast.makeText(currentContext, "Login FAILED", Toast.LENGTH_SHORT).show()
             }
         }
