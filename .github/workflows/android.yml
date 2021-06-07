@@ -24,30 +24,41 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       
+    - uses: r0adkll/sign-android-release@v1
+      name: Sign app APK
+      # ID used to access action output
+      id: sign_app
+      with:
+        releaseDirectory: app/build/outputs/bundle/release
+        signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+        alias: ${{ secrets.ALIAS }}
+        keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+        keyPassword: ${{ secrets.KEY_PASSWORD }}
+    
     - name: Upload Android Release to Play Store
-    # You may pin to the exact commit or the version.
-    # uses: r0adkll/upload-google-play@9745ef904e395471bca5696056a6ce8a60d18cf8
+      # You may pin to the exact commit or the version.
+      # uses: r0adkll/upload-google-play@9745ef904e395471bca5696056a6ce8a60d18cf8
     - uses: r0adkll/upload-google-play@v1.0.15
       with:
         # The service account json private key file to authorize the upload request
-        serviceAccountJson: # optional
+        #serviceAccountJson: # optional
         # The raw json text of the service account private key to authorize the upload request
-        serviceAccountJsonPlainText: # optional
+        serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON_PLAIN_TEXT }}
         # The package name, or Application Id, of the app you are uploading
         packageName: 'dev.ramprasad.bloom'
         # The Android release file to upload (.apk or .aab)
-        releaseFile: # optional
+        releaseFile: ${{steps.sign_app.outputs.signedReleaseFile}}
         # The Android release file(s) to upload (.apk or .aab). Separated by  a ',' for multiple artifacts. Supports glob
-        releaseFiles: # optional
+        #releaseFiles: # optional
         # The name of this release. If not set it's generated automatically from the APKs versionName
-        releaseName: # optional
+        #releaseName: # optional
         # The track in which you want to assign the uploaded app.
         track: 'internal'
         # In-app update priority of the release. All newly added APKs in the release will be considered at this priority. Can take values in the range [0, 5], with 5 the highest priority. Defaults to 0.
-        inAppUpdatePriority: # optional, default is 0
+        #inAppUpdatePriority: # optional, default is 0
         # Portion of users who should get the staged version of the app. Accepts values between 0.0 and 1.0 (exclusive-exclusive).
-        userFraction: # optional
+        #userFraction: # optional
         # The directory of localized whats new files
-        whatsNewDirectory: # optional
+        #whatsNewDirectory: # optional
         # The mapping.txt file used to de-obfuscate your stack traces from crash reports
-        mappingFile: # optional
+        #mappingFile: # optional
