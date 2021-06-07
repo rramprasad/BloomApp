@@ -27,9 +27,9 @@ class LoginRepository @Inject constructor() {
     @ExperimentalCoroutinesApi
     suspend fun login(email: String, password: String): Flow<Boolean> {
         return callbackFlow {
-            firebaseAuth.signInWithEmailAndPassword(email.trim(), password.trim())
+            val addOnCompleteListener =
+                firebaseAuth.signInWithEmailAndPassword(email.trim(), password.trim())
                     .addOnCompleteListener { task ->
-                        Log.d("compose", "on addOnCompleteListener ${task.isSuccessful}")
                         if (task.isSuccessful) {
                             trySend(true)
                         } else {

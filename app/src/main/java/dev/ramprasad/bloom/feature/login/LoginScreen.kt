@@ -49,46 +49,54 @@ fun LoginScreen(loginViewModel:LoginViewModel = hiltViewModel(),onLoginSuccess: 
         .fillMaxHeight()
         .background(MaterialTheme.colors.background)
     ) {
-        Log.d("compose", "LoginScreen compose: entered")
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val currentContext = LocalContext.current
             LoginTitle()
             Spacer(modifier = Modifier.size(16.dp))
             val emailState = rememberSaveable {
                 mutableStateOf("")
             }
-            EmailTextField(emailState)
+            val emailErrorState = rememberSaveable {
+                mutableStateOf(currentContext.getString(R.string.email_address_label))
+            }
+            EmailTextField(emailState,emailErrorState)
             Spacer(modifier = Modifier.size(8.dp))
 
             val passwordState = rememberSaveable {
                 mutableStateOf("")
             }
-            PasswordTextField(passwordState)
+            val passwordErrorState = rememberSaveable {
+                mutableStateOf(currentContext.getString(R.string.password_label))
+            }
+            PasswordTextField(passwordState,passwordErrorState)
             Spacer(modifier = Modifier.size(8.dp))
             TermsOfUseText()
             Spacer(modifier = Modifier.size(16.dp))
-            val currentContext = LocalContext.current
             LoginInButton{
-                Log.d("compose", "Login clicked")
+                if(emailState.value.isEmpty()){
+                    emailErrorState.value = currentContext.getString(R.string.required_field_empty_message)
+                }
+
+                if(passwordState.value.isEmpty()){
+                    passwordErrorState.value = currentContext.getString(R.string.required_field_empty_message)
+                }
+
                 if(emailState.value.isNotEmpty() && passwordState.value.isNotEmpty()) {
-                    Log.d("compose", "before login")
                     loginViewModel.onLogin(emailState.value, passwordState.value)
                 }
             }
 
-            Log.d("compose", "before loginResultState observe")
             val loginSuccess = loginViewModel.loginResultState.collectAsState().value
             if(loginSuccess){
-                Log.d("compose", "loginSuccess $loginSuccess")
-                Toast.makeText(currentContext, "Login SUCCESS", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(currentContext, "Login SUCCESS", Toast.LENGTH_SHORT).show()
                 onLoginSuccess()
             }
             else{
-                Log.d("compose", "loginSuccess $loginSuccess")
-                Toast.makeText(currentContext, "Login FAILED", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(currentContext, "Login FAILED", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -107,18 +115,24 @@ fun LoginTitle() {
 }
 
 @Composable
-fun EmailTextField(emailState: MutableState<String>) {
-    val errorOccured by rememberSaveable {
+fun EmailTextField(emailState: MutableState<String>,emailErrorState : MutableState<String>  ) {
+    val currentContext = LocalContext.current
+    /*var errorOccured by rememberSaveable {
         mutableStateOf(false)
     }
+    var errorMessage by rememberSaveable {
+        mutableStateOf("")
+    }*/
+
     OutlinedTextField(
         value = emailState.value,
         onValueChange = {
-            if(it.length < 50){
-                emailState.value = it
-            }
+            emailState.value = it
         },
-        isError = errorOccured,
+        label = {
+            Text(emailErrorState.value)
+        },
+        isError = emailErrorState.value != currentContext.getString(R.string.email_address_label),
         placeholder = { Text(text = stringResource(id = R.string.email_address),color = MaterialTheme.colors.onPrimary)},
         enabled = true,
         modifier = Modifier
@@ -140,15 +154,18 @@ fun EmailTextField(emailState: MutableState<String>) {
 }
 
 @Composable
-fun PasswordTextField(passwordState: MutableState<String>) {
+fun PasswordTextField(passwordState: MutableState<String>,passwordErrorState: MutableState<String>) {
+    val currentContext = LocalContext.current
     OutlinedTextField(
         value = passwordState.value,
         onValueChange = {
-            if(it.length < 50) {
                 passwordState.value = it
-            }
+        },
+        label = {
+            Text(passwordErrorState.value)
         },
         placeholder = { Text(text = stringResource(id = R.string.password),color = MaterialTheme.colors.onPrimary)},
+        isError = passwordErrorState.value != currentContext.getString(R.string.password_label),
         enabled = true,
         modifier = Modifier
             .fillMaxWidth()
