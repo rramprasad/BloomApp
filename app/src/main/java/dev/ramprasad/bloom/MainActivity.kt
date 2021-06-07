@@ -7,6 +7,7 @@
 package dev.ramprasad.bloom
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -80,7 +81,13 @@ class MainActivity : AppCompatActivity() {
             }
             composable(Screen.LoginScreen.route) {
                 LoginScreen {
-                    navController.navigate(Screen.HomeBaseScreen.route)
+                    Log.d("AppMainNavigation", "AppMainNavigation: ${navController.backQueue}")
+                    navController.navigate(Screen.HomeBaseScreen.route){
+                        popUpTo(Screen.LoginScreen.route){
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 }
             }
             composable(Screen.HomeBaseScreen.route) {
