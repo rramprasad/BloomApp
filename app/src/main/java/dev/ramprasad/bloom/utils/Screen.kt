@@ -7,10 +7,12 @@
 package dev.ramprasad.bloom.utils
 
 sealed class Screen(val route:String) {
-    object LandingScreen : Screen("LandingScreen")
+    //object LandingScreen : Screen("LandingScreen")
+
+    object LoginNavGraphRoute : Screen("LoginNavGraphRoute")
     object WelcomeScreen : Screen("WelcomeScreen")
     object LoginScreen : Screen("LoginScreen")
-    object HomeBaseScreen : Screen("HomeBaseScreen")
+    //object HomeBaseScreen : Screen("HomeBaseScreen")
 
     object HomeScreen : Screen("HomeScreen")
     object FavoritesScreen : Screen("FavoritesScreen")

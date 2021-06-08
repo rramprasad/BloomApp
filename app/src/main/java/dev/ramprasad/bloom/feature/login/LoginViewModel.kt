@@ -26,17 +26,23 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
     val loginResultState : StateFlow<Boolean> = _loginResultState
 
     /**
+     * UI States
+     */
+    private val _loginResultSharedFlow: MutableSharedFlow<Boolean> = MutableSharedFlow()
+    val loginResultSharedFlow : MutableSharedFlow<Boolean> = _loginResultSharedFlow
+
+    /**
      * UI Events
      */
     @ExperimentalCoroutinesApi
     fun onLogin(email: String, password: String) {
-        Log.d("compose", "onLogin on LoginViewModel")
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             loginRepository.login(email,password).stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = false
             ).collect {
+                _loginResultSharedFlow.tryEmit(it)
                 _loginResultState.value = it
             }
         }
