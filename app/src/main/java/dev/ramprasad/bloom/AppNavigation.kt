@@ -1,12 +1,11 @@
 /*
- * Created by Ramprasad Ranganathan on 08/06/21, 4:09 PM
+ * Created by Ramprasad Ranganathan on 09/06/21, 8:57 PM
  * Copyright (c) 2021. All rights reserved
- * Last modified 08/06/21, 4:09 PM
+ * Last modified 09/06/21, 8:57 PM
  */
 
 package dev.ramprasad.bloom
 
-import android.util.Log
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -20,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -33,29 +33,50 @@ import dev.ramprasad.bloom.feature.login.LoginViewModel
 import dev.ramprasad.bloom.ui.*
 import dev.ramprasad.bloom.utils.Screen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 
 @ExperimentalCoroutinesApi
 @Composable
 fun AppNavigation() {
     val appNavController = rememberNavController()
-
-    AppNavigationGraph(appNavController)
-
-    /*val loginViewModel = hiltViewModel<LoginViewModel>()
-    if (loginViewModel.loginResultState.collectAsState().value) {
-        HomeBaseScreen(appNavController)
-    } else {
-        appNavController.navigate(Screen.WelcomeScreen.route)
-    }*/
+    AppMainNavigationGraph(appNavController)
 }
 
 @ExperimentalCoroutinesApi
 @Composable
-private fun AppNavigationGraph(appNavController: NavHostController) {
-    NavHost(navController = appNavController, startDestination = Screen.HomeScreen.route) {
-        composable(Screen.HomeScreen.route) {
-            HomeBaseScreen(appNavController)
+private fun AppMainNavigationGraph(appNavController: NavHostController) {
+    NavHost(navController = appNavController, startDestination = Screen.SplashScreen.route) {
+        val navGraphBuilder = this
+        // Splash screen - Fixed Start destination
+        composable(Screen.SplashScreen.route) {
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            val loggedIn = loginViewModel.loginResultState.collectAsState().value
+
+            SplashScreen {
+                if (loggedIn) {
+                    appNavController.navigate(Screen.AppBaseScreen.route) {
+                        popUpTo(Screen.SplashScreen.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                } else {
+                    appNavController.navigate(Screen.LoginNavGraphRoute.route) {
+                        popUpTo(Screen.SplashScreen.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            }
+        }
+
+        composable(Screen.AppBaseScreen.route) {
+            AppBaseScreen(appNavController = appNavController, navGraphBuilder)
+        }
+
+        /*composable(Screen.HomeScreen.route) {
+            val homeViewModel = hiltViewModel<HomeViewModel>()
+            HomeScreen(homeViewModel = homeViewModel)
         }
 
         composable(Screen.FavoritesScreen.route) {
@@ -68,24 +89,43 @@ private fun AppNavigationGraph(appNavController: NavHostController) {
 
         composable(Screen.CartScreen.route) {
             CartScreen()
+        }*/
+
+        navigation(Screen.HomeScreen.route, Screen.AppBaseNavGraphRoute.route) {
+            composable(Screen.HomeScreen.route) {
+                val homeViewModel = hiltViewModel<HomeViewModel>()
+                HomeScreen(homeViewModel = homeViewModel)
+            }
+
+            composable(Screen.FavoritesScreen.route) {
+                FavoritesScreen()
+            }
+
+            composable(Screen.UserProfileScreen.route) {
+                UserProfileScreen()
+            }
+
+            composable(Screen.CartScreen.route) {
+                CartScreen()
+            }
         }
 
-        navigation(Screen.WelcomeScreen.route,Screen.LoginNavGraphRoute.route) {
+        navigation(Screen.WelcomeScreen.route, Screen.LoginNavGraphRoute.route) {
             composable(Screen.WelcomeScreen.route) {
                 WelcomeScreen({
                     // On Create Account Clicked
-                    /*Toast.makeText(
-                        this@MainActivity,
-                        "On Create Account Clicked",
-                        Toast.LENGTH_SHORT
-                    ).show()*/
                 }) {
                     appNavController.navigate(Screen.LoginScreen.route)
                 }
             }
             composable(Screen.LoginScreen.route) {
                 LoginScreen {
-                    appNavController.navigate(Screen.HomeScreen.route)
+                    appNavController.navigate(Screen.AppBaseScreen.route) {
+                        popUpTo(Screen.LoginNavGraphRoute.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 }
             }
         }
@@ -94,7 +134,7 @@ private fun AppNavigationGraph(appNavController: NavHostController) {
 
 
 @Composable
-fun HomeBaseScreen(appNavController: NavHostController) {
+fun AppBaseScreen(appNavController: NavHostController, navGraphBuilder: NavGraphBuilder) {
     Scaffold(
         drawerBackgroundColor = MaterialTheme.colors.primary,
         drawerContent = {
@@ -107,25 +147,11 @@ fun HomeBaseScreen(appNavController: NavHostController) {
         drawerShape = MaterialTheme.shapes.medium,
         bottomBar = {
             BottomNavigation(appNavController)
-            /*val appNavBackStackEntry by appNavController.currentBackStackEntryAsState()
-            val currentRoute = appNavBackStackEntry?.destination?.route
-
-            if(currentRoute != null && currentRoute != Screen.WelcomeScreen.route && currentRoute != Screen.LoginScreen.route) {
-                BottomNavigation(appNavController)
-            }*/
         },
         modifier = Modifier.navigationBarsPadding()
     ) {
-        //HomeTabsSubNavigation(appNavController)
-        //val homeViewModel = hiltViewModel<HomeViewModel>()
-        //HomeScreen(homeViewModel = homeViewModel)
-
-        val loginViewModel = hiltViewModel<LoginViewModel>()
-        if (loginViewModel.loginResultState.collectAsState().value) {
-            appNavController.navigate(Screen.HomeScreen.route)
-        } else {
-            appNavController.navigate(Screen.WelcomeScreen.route)
-        }
+        val homeViewModel = hiltViewModel<HomeViewModel>()
+        HomeScreen(homeViewModel = homeViewModel)
     }
 }
 
@@ -137,17 +163,19 @@ private fun BottomNavigation(appNavController: NavHostController) {
         contentColor = MaterialTheme.colors.onPrimary,
         content = {
             val homeNavBackStackEntry by appNavController.currentBackStackEntryAsState()
-            val currentRoute = homeNavBackStackEntry?.destination?.route
+            val currentDestination = homeNavBackStackEntry?.destination
 
             BottomNavigationItem(
                 icon = {
-                    Icon(Icons.Filled.Home,null)
+                    Icon(Icons.Filled.Home, null)
                 },
                 label = { Text(stringResource(id = R.string.home)) },
-                selected = currentRoute == Screen.HomeScreen.route,
+                selected = currentDestination?.hierarchy?.any { it.route == Screen.HomeScreen.route } == true,
                 onClick = {
-                    appNavController.navigate(Screen.HomeScreen.route){
-                        popUpTo = appNavController.graph.startDestinationId
+                    appNavController.navigate(Screen.HomeScreen.route) {
+                        popUpTo(appNavController.graph.startDestinationId) {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 },
@@ -164,10 +192,12 @@ private fun BottomNavigation(appNavController: NavHostController) {
                     )
                 },
                 label = { Text(stringResource(id = R.string.favorites)) },
-                selected = currentRoute == Screen.FavoritesScreen.route,
+                selected = currentDestination?.hierarchy?.any { it.route == Screen.FavoritesScreen.route } == true,
                 onClick = {
-                    appNavController.navigate(Screen.FavoritesScreen.route){
-                        popUpTo = appNavController.graph.startDestinationId
+                    appNavController.navigate(Screen.FavoritesScreen.route) {
+                        popUpTo(appNavController.graph.startDestinationId) {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 },
@@ -184,10 +214,12 @@ private fun BottomNavigation(appNavController: NavHostController) {
                     )
                 },
                 label = { Text(stringResource(id = R.string.profile)) },
-                selected = currentRoute == Screen.UserProfileScreen.route,
+                selected = currentDestination?.hierarchy?.any { it.route == Screen.UserProfileScreen.route } == true,
                 onClick = {
-                    appNavController.navigate(Screen.UserProfileScreen.route){
-                        popUpTo = appNavController.graph.startDestinationId
+                    appNavController.navigate(Screen.UserProfileScreen.route) {
+                        popUpTo(appNavController.graph.startDestinationId) {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 },
@@ -204,10 +236,12 @@ private fun BottomNavigation(appNavController: NavHostController) {
                     )
                 },
                 label = { Text(stringResource(id = R.string.cart)) },
-                selected = currentRoute == Screen.CartScreen.route,
+                selected = currentDestination?.hierarchy?.any { it.route == Screen.CartScreen.route } == true,
                 onClick = {
-                    appNavController.navigate(Screen.CartScreen.route){
-                        popUpTo = appNavController.graph.startDestinationId
+                    appNavController.navigate(Screen.CartScreen.route) {
+                        popUpTo(appNavController.graph.startDestinationId) {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 },

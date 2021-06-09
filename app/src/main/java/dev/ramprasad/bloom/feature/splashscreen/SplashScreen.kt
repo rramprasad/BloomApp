@@ -1,7 +1,7 @@
 /*
- * Created by Ramprasad Ranganathan on 02/06/21, 2:07 PM
+ * Created by Ramprasad Ranganathan on 09/06/21, 8:57 PM
  * Copyright (c) 2021. All rights reserved
- * Last modified 02/06/21, 1:26 PM
+ * Last modified 09/06/21, 8:57 PM
  */
 
 package dev.ramprasad.bloom.ui
@@ -28,15 +28,14 @@ import dev.ramprasad.bloom.theme.BloomTheme
 private const val LOG_TAG: String = "LandingScreen"
 
 @Composable
-fun LandingScreen(onTimeout : () -> Unit)
-{
+fun SplashScreen(onTimeout: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.primary),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         val rememberedOnTimeout by rememberUpdatedState(newValue = onTimeout)
         val rememberedAppNameVisibility by rememberSaveable {
             mutableStateOf(false)
@@ -90,7 +89,7 @@ fun AppName(rememberedAppNameVisibility: Boolean) {
 @Composable
 fun PreviewLightSplashScreen(){
     BloomTheme(false) {
-        LandingScreen {
+        SplashScreen {
 
         }
     }
@@ -102,7 +101,7 @@ fun PreviewLightSplashScreen(){
 @Composable
 fun PreviewDarkSplashScreen(){
     BloomTheme(true) {
-        LandingScreen {
+        SplashScreen {
 
         }
     }
