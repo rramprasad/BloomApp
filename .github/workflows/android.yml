@@ -41,7 +41,7 @@ jobs:
           packageName: 'dev.ramprasad.bloom'
           # The Android release file to upload (.apk or .aab)
           releaseFile: ${{steps.sign_app.outputs.signedReleaseFile}}
-          # The Android release file(s) to upload (.apk or .aab). Separated by  a ',' for multiple artifacts. Supports glob
+          # The Android release file(s) to upload (.apk or .aab).Separated by  a ',' for multiple artifacts. Supports glob
           #releaseFiles: # optional
           # The name of this release. If not set it's generated automatically from the APKs versionName
           #releaseName: # optional
