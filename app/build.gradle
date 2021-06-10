@@ -1,7 +1,7 @@
 /*
- * Created by Ramprasad Ranganathan on 09/06/21, 8:57 PM
+ * Created by Ramprasad Ranganathan on 10/06/21, 1:37 PM
  * Copyright (c) 2021. All rights reserved
- * Last modified 09/06/21, 4:09 PM
+ * Last modified 10/06/21, 1:36 PM
  */
 
 plugins {
@@ -15,13 +15,15 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'project-report'
 
 android {
-    compileSdkVersion "android-S"
+    //compileSdkVersion "android-S"
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "dev.ramprasad.bloom"
         minSdkVersion 23
-        targetSdkVersion "S"
-        versionCode 1
+        //targetSdkVersion "S"
+        targetSdkVersion 30
+        versionCode 2
         versionName "1.0"
 
         javaCompileOptions {
