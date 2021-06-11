@@ -1,7 +1,7 @@
 /*
- * Created by Ramprasad Ranganathan on 09/06/21, 8:57 PM
+ * Created by Ramprasad Ranganathan on 11/06/21, 8:54 PM
  * Copyright (c) 2021. All rights reserved
- * Last modified 09/06/21, 8:57 PM
+ * Last modified 11/06/21, 8:54 PM
  */
 
 package dev.ramprasad.bloom
@@ -20,13 +20,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import com.google.accompanist.insets.navigationBarsPadding
 import dev.ramprasad.bloom.feature.home.HomeViewModel
 import dev.ramprasad.bloom.feature.login.LoginViewModel
@@ -36,105 +34,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @Composable
-fun AppNavigation() {
+fun MainScreen() {
     val appNavController = rememberNavController()
-    AppMainNavigationGraph(appNavController)
-}
+    val loginNavController = rememberNavController()
 
-@ExperimentalCoroutinesApi
-@Composable
-private fun AppMainNavigationGraph(appNavController: NavHostController) {
-    NavHost(navController = appNavController, startDestination = Screen.SplashScreen.route) {
-        val navGraphBuilder = this
-        // Splash screen - Fixed Start destination
-        composable(Screen.SplashScreen.route) {
-            val loginViewModel = hiltViewModel<LoginViewModel>()
-            val loggedIn = loginViewModel.loginResultState.collectAsState().value
-
-            SplashScreen {
-                if (loggedIn) {
-                    appNavController.navigate(Screen.AppBaseScreen.route) {
-                        popUpTo(Screen.SplashScreen.route) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                } else {
-                    appNavController.navigate(Screen.LoginNavGraphRoute.route) {
-                        popUpTo(Screen.SplashScreen.route) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                }
-            }
-        }
-
-        composable(Screen.AppBaseScreen.route) {
-            AppBaseScreen(appNavController = appNavController, navGraphBuilder)
-        }
-
-        /*composable(Screen.HomeScreen.route) {
-            val homeViewModel = hiltViewModel<HomeViewModel>()
-            HomeScreen(homeViewModel = homeViewModel)
-        }
-
-        composable(Screen.FavoritesScreen.route) {
-            FavoritesScreen()
-        }
-
-        composable(Screen.UserProfileScreen.route) {
-            UserProfileScreen()
-        }
-
-        composable(Screen.CartScreen.route) {
-            CartScreen()
-        }*/
-
-        navigation(Screen.HomeScreen.route, Screen.AppBaseNavGraphRoute.route) {
-            composable(Screen.HomeScreen.route) {
-                val homeViewModel = hiltViewModel<HomeViewModel>()
-                HomeScreen(homeViewModel = homeViewModel)
-            }
-
-            composable(Screen.FavoritesScreen.route) {
-                FavoritesScreen()
-            }
-
-            composable(Screen.UserProfileScreen.route) {
-                UserProfileScreen()
-            }
-
-            composable(Screen.CartScreen.route) {
-                CartScreen()
-            }
-        }
-
-        navigation(Screen.WelcomeScreen.route, Screen.LoginNavGraphRoute.route) {
-            composable(Screen.WelcomeScreen.route) {
-                WelcomeScreen({
-                    // On Create Account Clicked
-                }) {
-                    appNavController.navigate(Screen.LoginScreen.route)
-                }
-            }
-            composable(Screen.LoginScreen.route) {
-                LoginScreen {
-                    appNavController.navigate(Screen.AppBaseScreen.route) {
-                        popUpTo(Screen.LoginNavGraphRoute.route) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun AppBaseScreen(appNavController: NavHostController, navGraphBuilder: NavGraphBuilder) {
+    AppLoginNavigationGraph(appNavController, loginNavController)
     Scaffold(
         drawerBackgroundColor = MaterialTheme.colors.primary,
         drawerContent = {
@@ -150,10 +54,176 @@ fun AppBaseScreen(appNavController: NavHostController, navGraphBuilder: NavGraph
         },
         modifier = Modifier.navigationBarsPadding()
     ) {
-        val homeViewModel = hiltViewModel<HomeViewModel>()
-        HomeScreen(homeViewModel = homeViewModel)
+        AppMainNavigationGraph(appNavController, loginNavController)
     }
 }
+
+@ExperimentalCoroutinesApi
+@Composable
+private fun AppLoginNavigationGraph(
+    appNavController: NavHostController,
+    loginNavController: NavHostController
+) {
+    NavHost(navController = appNavController, startDestination = Screen.SplashScreen.route) {
+        composable(Screen.SplashScreen.route) {
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            val loggedIn = loginViewModel.loginResultState.collectAsState().value
+
+            SplashScreen {
+                if (loggedIn) {
+                    appNavController.navigate(Screen.HomeScreen.route) {
+                        popUpTo(Screen.SplashScreen.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                } else {
+                    loginNavController.navigate(Screen.WelcomeScreen.route) {
+                        popUpTo(Screen.SplashScreen.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            }
+        }
+
+        composable(Screen.WelcomeScreen.route) {
+            WelcomeScreen({
+                // On Create Account Clicked
+            }) {
+                loginNavController.navigate(Screen.LoginScreen.route)
+            }
+        }
+        composable(Screen.LoginScreen.route) {
+            LoginScreen {
+                appNavController.navigate(Screen.HomeScreen.route) {
+                    popUpTo(Screen.LoginScreen.route) {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
+                }
+            }
+        }
+
+        /*navigation(Screen.WelcomeScreen.route, Screen.LoginNavGraphRoute.route) {
+            composable(Screen.WelcomeScreen.route) {
+                WelcomeScreen({
+                    // On Create Account Clicked
+                }) {
+                    appNavController.navigate(Screen.LoginScreen.route)
+                }
+            }
+            composable(Screen.LoginScreen.route) {
+                LoginScreen {
+                    appNavController.navigate(Screen.MainScreen.route) {
+                        popUpTo(Screen.LoginNavGraphRoute.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            }
+        }*/
+    }
+}
+
+@ExperimentalCoroutinesApi
+@Composable
+private fun AppMainNavigationGraph(
+    appNavController: NavHostController,
+    loginNavController: NavHostController
+) {
+    NavHost(navController = appNavController, startDestination = Screen.HomeScreen.route) {
+        //val navGraphBuilder = this
+        // Splash screen - Fixed Start destination
+        /*composable(Screen.SplashScreen.route) {
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            val loggedIn = loginViewModel.loginResultState.collectAsState().value
+
+            SplashScreen {
+                if (loggedIn) {
+                    appNavController.navigate(Screen.MainScreen.route) {
+                        popUpTo(Screen.SplashScreen.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                } else {
+                    appNavController.navigate(Screen.LoginNavGraphRoute.route) {
+                        popUpTo(Screen.SplashScreen.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            }
+        }*/
+
+        /*composable(Screen.MainScreen.route) {
+            MainScreen(appNavController = appNavController, navGraphBuilder)
+        }*/
+
+        composable(Screen.HomeScreen.route) {
+            val homeViewModel = hiltViewModel<HomeViewModel>()
+            HomeScreen(homeViewModel = homeViewModel)
+
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            val loggedIn = loginViewModel.loginResultState.collectAsState().value
+            if (!loggedIn) {
+                loginNavController.navigate(Screen.WelcomeScreen.route)
+            }
+        }
+
+        composable(Screen.FavoritesScreen.route) {
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            val loggedIn = loginViewModel.loginResultState.collectAsState().value
+            if (!loggedIn) {
+                loginNavController.navigate(Screen.WelcomeScreen.route)
+            }
+            FavoritesScreen()
+        }
+
+        composable(Screen.UserProfileScreen.route) {
+            UserProfileScreen()
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            val loggedIn = loginViewModel.loginResultState.collectAsState().value
+            if (!loggedIn) {
+                loginNavController.navigate(Screen.WelcomeScreen.route)
+            }
+        }
+
+        composable(Screen.CartScreen.route) {
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            val loggedIn = loginViewModel.loginResultState.collectAsState().value
+            if (!loggedIn) {
+                loginNavController.navigate(Screen.WelcomeScreen.route)
+            }
+        }
+
+        /*navigation(Screen.WelcomeScreen.route, Screen.LoginNavGraphRoute.route) {
+            composable(Screen.WelcomeScreen.route) {
+                WelcomeScreen({
+                    // On Create Account Clicked
+                }) {
+                    appNavController.navigate(Screen.LoginScreen.route)
+                }
+            }
+            composable(Screen.LoginScreen.route) {
+                LoginScreen {
+                    appNavController.navigate(Screen.MainScreen.route) {
+                        popUpTo(Screen.LoginNavGraphRoute.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            }
+        }*/
+    }
+}
+
+
 
 @Composable
 private fun BottomNavigation(appNavController: NavHostController) {
