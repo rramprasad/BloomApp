@@ -2,6 +2,9 @@
 
 Beautiful home garden solution Android app developed using latest Android UI tool Jetpack Compose and implemented most of the new Android APIs.
 
+## App Available on Google Play Store
+<a href='https://play.google.com/store/apps/details?id=dev.ramprasad.bloom&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+
 ## App Screens
 ## Light Theme
 <img src="screenshots/screenshot_01.png" width="320" height="640"> <img src="screenshots/screenshot_03.png" width="320" height="640"> <img src="screenshots/screenshot_05.png" width="320" height="640"> <img src="screenshots/screenshot_07.png" width="320" height="640">
