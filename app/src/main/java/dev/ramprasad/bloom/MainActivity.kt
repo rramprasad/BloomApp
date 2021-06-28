@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             BloomTheme {
                 ProvideWindowInsets(windowInsetsAnimationsEnabled = true,consumeWindowInsets = true) {
-                    MainScreen()
+                    AppNavigation()
                 }
             }
         }

@@ -25,11 +25,12 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
     private val _loginResultState: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val loginResultState : StateFlow<Boolean> = _loginResultState
 
-    /**
-     * UI States
-     */
-    private val _loginResultSharedFlow: MutableSharedFlow<Boolean> = MutableSharedFlow()
-    val loginResultSharedFlow : MutableSharedFlow<Boolean> = _loginResultSharedFlow
+    private val _userLoggedIn: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val userLoggedIn : StateFlow<Boolean> = _userLoggedIn
+
+    init {
+        isUserLoggedIn()
+    }
 
     /**
      * UI Events
@@ -42,9 +43,14 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = false
             ).collect {
-                _loginResultSharedFlow.tryEmit(it)
                 _loginResultState.value = it
             }
+        }
+    }
+
+    private fun isUserLoggedIn() {
+        viewModelScope.launch {
+            _userLoggedIn.value = loginRepository.isUserLoggedIn()
         }
     }
 }

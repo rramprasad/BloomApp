@@ -96,7 +96,7 @@ fun LoginScreen(loginViewModel:LoginViewModel = hiltViewModel(),onLoginSuccess: 
                 onLoginSuccess()
             }
             else{
-                //Toast.makeText(currentContext, "Login FAILED", Toast.LENGTH_SHORT).show()
+                Toast.makeText(currentContext, "Login FAILED", Toast.LENGTH_SHORT).show()
             }
         }
     }
