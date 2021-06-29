@@ -21,7 +21,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew app:bundleRelease
+        run: ./gradlew app:bundleProductionRelease
       - name: Sign app APK
         uses: r0adkll/sign-android-release@v1
         id: sign_app
@@ -47,7 +47,7 @@ jobs:
           # The name of this release. If not set it's generated automatically from the APKs versionName
           #releaseName: # optional
           # The track in which you want to assign the uploaded app.
-          track: 'internal'
+          track: 'production'
           # In-app update priority of the release. All newly added APKs in the release will be considered at this priority. Can take values in the range [0, 5], with 5 the highest priority. Defaults to 0.
           #inAppUpdatePriority: # optional, default is 0
           # Portion of users who should get the staged version of the app. Accepts values between 0.0 and 1.0 (exclusive-exclusive).
