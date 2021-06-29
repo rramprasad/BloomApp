@@ -1,24 +1,17 @@
 /*
- * Created by Ramprasad Ranganathan on 02/06/21, 2:07 PM
+ * Created by Ramprasad Ranganathan on 29/06/21, 2:44 PM
  * Copyright (c) 2021. All rights reserved
- * Last modified 01/06/21, 2:45 PM
+ * Last modified 29/06/21, 2:44 PM
  */
 
 package dev.ramprasad.bloom.feature.login
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import dev.ramprasad.bloom.database.AppDatabase
-import dev.ramprasad.bloom.database.GardenTheme
-import dev.ramprasad.bloom.database.Plant
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 class LoginRepository @Inject constructor() {
 
@@ -39,7 +32,22 @@ class LoginRepository @Inject constructor() {
         }
     }
 
-    suspend fun isUserLoggedIn(): Boolean {
+    @ExperimentalCoroutinesApi
+    suspend fun signUp(email: String, password: String): Flow<Boolean> {
+        return callbackFlow {
+            firebaseAuth.createUserWithEmailAndPassword(email.trim(), password.trim())
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        trySend(true)
+                    } else {
+                        trySend(false)
+                    }
+                }
+            awaitClose()
+        }
+    }
+
+    fun isUserLoggedIn(): Boolean {
         firebaseAuth.currentUser?.run {
             return true
         } ?: run {

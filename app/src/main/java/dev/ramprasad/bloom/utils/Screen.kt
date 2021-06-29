@@ -1,7 +1,7 @@
 /*
- * Created by Ramprasad Ranganathan on 11/06/21, 8:54 PM
+ * Created by Ramprasad Ranganathan on 29/06/21, 2:44 PM
  * Copyright (c) 2021. All rights reserved
- * Last modified 11/06/21, 5:54 PM
+ * Last modified 29/06/21, 2:02 PM
  */
 
 package dev.ramprasad.bloom.utils
@@ -10,6 +10,7 @@ sealed class Screen(val route:String) {
     object SplashScreen : Screen("SplashScreen")
     object WelcomeScreen : Screen("WelcomeScreen")
     object LoginScreen : Screen("LoginScreen")
+    object SignUpScreen : Screen("SignUpScreen")
     object MainScreen : Screen("MainScreen")
     object HomeScreen : Screen("HomeScreen")
     object FavoritesScreen : Screen("FavoritesScreen")

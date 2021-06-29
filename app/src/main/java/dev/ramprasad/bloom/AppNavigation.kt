@@ -1,7 +1,7 @@
 /*
- * Created by Ramprasad Ranganathan on 11/06/21, 8:54 PM
+ * Created by Ramprasad Ranganathan on 29/06/21, 2:44 PM
  * Copyright (c) 2021. All rights reserved
- * Last modified 11/06/21, 8:54 PM
+ * Last modified 29/06/21, 2:44 PM
  */
 
 package dev.ramprasad.bloom
@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,6 +29,7 @@ import androidx.navigation.navigation
 import com.google.accompanist.insets.navigationBarsPadding
 import dev.ramprasad.bloom.feature.home.HomeViewModel
 import dev.ramprasad.bloom.feature.login.LoginViewModel
+import dev.ramprasad.bloom.feature.login.SignUpScreen
 import dev.ramprasad.bloom.ui.*
 import dev.ramprasad.bloom.utils.Screen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,7 +54,7 @@ fun AppNavigation() {
                         launchSingleTop = true
                     }
                 } else {
-                    appNavController.navigate(Screen.WelcomeScreen.route) {
+                    appNavController.navigate("LoginSubNavigationGraphRoute") {
                         popUpTo(Screen.SplashScreen.route) {
                             inclusive = true
                         }
@@ -64,23 +64,37 @@ fun AppNavigation() {
             }
         }
 
-        // Login Welcome screen
-        composable(Screen.WelcomeScreen.route) {
-            WelcomeScreen({
-                // On Create Account Clicked
-            }) {
-                appNavController.navigate(Screen.LoginScreen.route)
+        navigation(Screen.WelcomeScreen.route, "LoginSubNavigationGraphRoute") {
+            // Login Welcome screen
+            composable(Screen.WelcomeScreen.route) {
+                WelcomeScreen({
+                    appNavController.navigate(Screen.SignUpScreen.route)
+                }) {
+                    appNavController.navigate(Screen.LoginScreen.route)
+                }
             }
-        }
 
-        // Login screen
-        composable(Screen.LoginScreen.route) {
-            LoginScreen {
-                appNavController.navigate(Screen.MainScreen.route) {
-                    popUpTo(Screen.LoginScreen.route) {
-                        inclusive = true
+            // Login screen
+            composable(Screen.LoginScreen.route) {
+                LoginScreen {
+                    appNavController.navigate(Screen.MainScreen.route) {
+                        popUpTo("LoginSubNavigationGraphRoute") {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
                     }
-                    launchSingleTop = true
+                }
+            }
+
+            // SignUp screen
+            composable(Screen.SignUpScreen.route) {
+                SignUpScreen {
+                    appNavController.navigate(Screen.MainScreen.route) {
+                        popUpTo("LoginSubNavigationGraphRoute") {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 }
             }
         }

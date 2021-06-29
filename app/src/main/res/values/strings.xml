@@ -1,3 +1,9 @@
+<!--
+  ~ Created by Ramprasad Ranganathan on 29/06/21, 2:44 PM
+  ~ Copyright (c) 2021. All rights reserved
+  ~ Last modified 29/06/21, 1:42 PM
+  -->
+
 <resources>
     <!--
       Copyright 2020 The Android Open Source Project
@@ -14,9 +20,11 @@
     <string name="beautiful_home_garden_solutions">Beautiful home garden solutions</string>
     <string name="create_account">Create account</string>
     <string name="login">Log in</string>
+    <string name="signup">Sign Up</string>
     <string name="login_with_email">Log in with email</string>
     <string name="email_address">Enter your Email address</string>
     <string name="password">Enter Password (8+ characters)</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="terms_of_use_1">By clicking below, you agree to our Terms of Use </string>
     <string name="terms_of_use_2">and consent to our Privacy Policy</string>
     <string name="home">Home</string>
@@ -29,4 +37,7 @@
     <string name="required_field_empty_message">This field is required</string>
     <string name="email_address_label">Email</string>
     <string name="password_label">Password</string>
+    <string name="confirm_password_label">Confirm Password</string>
+    <string name="sign_up_with_email">Sign up with email</string>
+    <string name="password_not_matched">Password Not Matched</string>
 </resources>
