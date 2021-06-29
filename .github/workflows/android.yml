@@ -26,7 +26,7 @@ jobs:
         uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/bundle/release
+          releaseDirectory: app/build/outputs/bundle/productionRelease
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
@@ -43,7 +43,7 @@ jobs:
           # The Android release file to upload (.apk or .aab)
           #releaseFile: ${{steps.sign_app.outputs.signedReleaseFile}}
           # The Android release file(s) to upload (.apk or .aab).Separated by  a ',' for multiple artifacts. Supports glob
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          releaseFiles: app/build/outputs/bundle/productionRelease/app-production-release.aab
           # The name of this release. If not set it's generated automatically from the APKs versionName
           #releaseName: # optional
           # The track in which you want to assign the uploaded app.
