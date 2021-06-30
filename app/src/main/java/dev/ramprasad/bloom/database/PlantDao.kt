@@ -29,6 +29,9 @@ interface PlantDao {
     @Insert
     suspend fun insertAll(vararg plant: Plant)
 
+    @Insert
+    suspend fun insert(plant: Plant)
+
     @Delete
     suspend fun delete(plant: Plant)
 }

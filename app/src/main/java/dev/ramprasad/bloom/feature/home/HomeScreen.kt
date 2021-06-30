@@ -4,7 +4,7 @@
  * Last modified 01/06/21, 2:45 PM
  */
 
-package dev.ramprasad.bloom.ui
+package dev.ramprasad.bloom.feature.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,12 +14,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,14 +25,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
 import dev.ramprasad.bloom.R
-import dev.ramprasad.bloom.feature.home.HomeViewModel
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel) {
+fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -118,11 +114,8 @@ fun ThemesTitle() {
 
 @Composable
 fun ThemesList(homeViewModel: HomeViewModel) {
-    //val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
-    //val homeViewModel = hiltNavGraphViewModel<HomeViewModel>()
-    homeViewModel.loadGardenThemesList()
-    val gardenThemesList by homeViewModel.gardenThemesListLiveData.observeAsState()
-    gardenThemesList?.let {
+    val gardenThemesList by homeViewModel.gardenThemesListState.collectAsState()
+    gardenThemesList.let {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
@@ -210,11 +203,8 @@ fun PlantsTitle() {
 
 @Composable
 fun PlantsList(homeViewModel: HomeViewModel) {
-    //val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
-    //val homeViewModel = hiltNavGraphViewModel<HomeViewModel>()
-    homeViewModel.loadPlantsList()
-    val plantsList by homeViewModel.plantsListLiveData.observeAsState()
-    plantsList?.let {
+    val plantsList by homeViewModel.plantsListState.collectAsState()
+    plantsList.let {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -327,6 +317,7 @@ fun PlantsList(homeViewModel: HomeViewModel) {
         }
     }
 }
+
 /*@Preview(
     device = Devices.PIXEL_4_XL,
     uiMode = Configuration.UI_MODE_TYPE_NORMAL,

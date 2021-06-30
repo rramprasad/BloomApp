@@ -19,7 +19,7 @@ import dev.ramprasad.bloom.database.Plant
 @InstallIn(ViewModelComponent::class)
 object HomeModule {
 
-    @Provides
+    /*@Provides
     @ViewModelScoped
     fun provideGardenThemesListLiveData(): MutableLiveData<List<GardenTheme>> {
         return MutableLiveData<List<GardenTheme>>()
@@ -35,7 +35,7 @@ object HomeModule {
     @ViewModelScoped
     fun provideStringLiveData(): MutableLiveData<String> {
         return MutableLiveData<String>()
-    }
+    }*/
 
     /*@Provides
     @ViewModelScoped

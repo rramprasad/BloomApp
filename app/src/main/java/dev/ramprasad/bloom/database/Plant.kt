@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @Entity(tableName = "plant")
 data class Plant @Inject constructor(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "plant_id") val plantId : Int = 0,
+    @PrimaryKey(autoGenerate = false) @ColumnInfo(name = "plant_id") val plantId : String,
     @ColumnInfo(name = "plant_name") val plantName : String,
     @ColumnInfo(name = "plant_image_url") val plantImageUrl : String,
     @ColumnInfo(name = "plant_description") val plantDescription : String,
-    @ColumnInfo(name = "garden_theme_id") val gardenThemeId : Int)
+    @ColumnInfo(name = "garden_theme_id") val gardenThemeId : String)

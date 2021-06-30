@@ -18,8 +18,11 @@ interface GardenThemeDao {
     suspend fun getAll() : List<GardenTheme>
 
     @Insert
+    suspend fun insert(gardenTheme : GardenTheme)
+
+    @Insert
     suspend fun insertAll(vararg gardenTheme : GardenTheme)
 
     @Delete
-    suspend fun delete(gardenTheme: GardenTheme)
+    suspend fun delete(gardenThemeId: GardenTheme)
 }

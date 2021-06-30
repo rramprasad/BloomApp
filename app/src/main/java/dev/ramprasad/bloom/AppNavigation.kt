@@ -27,7 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.google.accompanist.insets.navigationBarsPadding
-import dev.ramprasad.bloom.feature.home.HomeViewModel
+import dev.ramprasad.bloom.feature.home.HomeScreen
 import dev.ramprasad.bloom.feature.login.LoginViewModel
 import dev.ramprasad.bloom.feature.login.SignUpScreen
 import dev.ramprasad.bloom.ui.*
@@ -126,8 +126,7 @@ fun MainScreen(appNavController: NavHostController) {
     ) {
         NavHost(mainScreenNavController, startDestination = Screen.HomeScreen.route) {
             composable(Screen.HomeScreen.route) {
-                val homeViewModel = hiltViewModel<HomeViewModel>()
-                HomeScreen(homeViewModel = homeViewModel)
+                HomeScreen()
                 val loginViewModel = hiltViewModel<LoginViewModel>()
                 val loggedIn = loginViewModel.userLoggedIn.collectAsState().value
                 if (!loggedIn) {
@@ -136,12 +135,12 @@ fun MainScreen(appNavController: NavHostController) {
             }
 
             composable(Screen.FavoritesScreen.route) {
+                FavoritesScreen()
                 val loginViewModel = hiltViewModel<LoginViewModel>()
                 val loggedIn = loginViewModel.userLoggedIn.collectAsState().value
                 if (!loggedIn) {
                     appNavController.navigate(Screen.WelcomeScreen.route)
                 }
-                FavoritesScreen()
             }
 
             composable(Screen.UserProfileScreen.route) {
@@ -154,6 +153,7 @@ fun MainScreen(appNavController: NavHostController) {
             }
 
             composable(Screen.CartScreen.route) {
+                CartScreen()
                 val loginViewModel = hiltViewModel<LoginViewModel>()
                 val loggedIn = loginViewModel.userLoggedIn.collectAsState().value
                 if (!loggedIn) {

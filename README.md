@@ -27,6 +27,8 @@ Beautiful home garden solution Android app developed using latest Android UI too
 - [Room Database](https://developer.android.com/training/data-storage/room)
 - [Coil Image Loading library with Accompanist](https://google.github.io/accompanist/coil/)
 - [Lottie Animation with Jetpack Compose](https://airbnb.io/lottie/#/android-compose)
+- [App Startup](https://developer.android.com/topic/libraries/app-startup)
+- [Work Manager](https://developer.android.com/topic/libraries/architecture/workmanager)
 
 ## App Architecture
 - [Unidirectional data flow(UDF) Architecture](https://developer.android.com/jetpack/compose/architecture#udf)

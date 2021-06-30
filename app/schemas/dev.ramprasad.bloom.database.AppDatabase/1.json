@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f3f44dc107295d98f0a4c74a31665879",
+    "identityHash": "9087eb6bf7db55a26cc98af23cbcfab7",
     "entities": [
       {
         "tableName": "user",
@@ -38,12 +38,12 @@
       },
       {
         "tableName": "gardentheme",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`theme_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `theme_name` TEXT NOT NULL, `theme_image_url` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`theme_id` TEXT NOT NULL, `theme_name` TEXT NOT NULL, `theme_image_url` TEXT NOT NULL, PRIMARY KEY(`theme_id`))",
         "fields": [
           {
             "fieldPath": "themeId",
             "columnName": "theme_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -63,19 +63,19 @@
           "columnNames": [
             "theme_id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "plant",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`plant_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `plant_name` TEXT NOT NULL, `plant_image_url` TEXT NOT NULL, `plant_description` TEXT NOT NULL, `garden_theme_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`plant_id` TEXT NOT NULL, `plant_name` TEXT NOT NULL, `plant_image_url` TEXT NOT NULL, `plant_description` TEXT NOT NULL, `garden_theme_id` TEXT NOT NULL, PRIMARY KEY(`plant_id`))",
         "fields": [
           {
             "fieldPath": "plantId",
             "columnName": "plant_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -99,7 +99,7 @@
           {
             "fieldPath": "gardenThemeId",
             "columnName": "garden_theme_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -107,7 +107,7 @@
           "columnNames": [
             "plant_id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -116,7 +116,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f3f44dc107295d98f0a4c74a31665879')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9087eb6bf7db55a26cc98af23cbcfab7')"
     ]
   }
 }

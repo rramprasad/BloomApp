@@ -6,7 +6,9 @@
 
 package dev.ramprasad.bloom.feature.login
 
+import androidx.startup.AppInitializer
 import com.google.firebase.auth.FirebaseAuth
+import dev.ramprasad.bloom.BloomAppInitializer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +18,7 @@ import javax.inject.Inject
 class LoginRepository @Inject constructor() {
 
     @Inject lateinit var firebaseAuth : FirebaseAuth
+    @Inject lateinit var bloomAppInitializer: AppInitializer
 
     @ExperimentalCoroutinesApi
     suspend fun login(email: String, password: String): Flow<Boolean> {
@@ -23,6 +26,7 @@ class LoginRepository @Inject constructor() {
             firebaseAuth.signInWithEmailAndPassword(email.trim(), password.trim())
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+                            bloomAppInitializer.initializeComponent(BloomAppInitializer::class.java)
                             trySend(true)
                         } else {
                             trySend(false)
