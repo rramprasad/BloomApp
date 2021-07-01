@@ -7,6 +7,7 @@
 package dev.ramprasad.bloom.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -17,10 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import dev.ramprasad.bloom.R
+import dev.ramprasad.bloom.feature.login.LoginViewModel
 
 @Composable
-fun CartScreen() {
+fun CartScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -40,6 +43,9 @@ fun CartScreen() {
                 modifier = Modifier
                     .paddingFromBaseline(32.dp, 0.dp)
                     .padding(16.dp, 16.dp)
+                    .clickable {
+                        loginViewModel.onSignOut()
+                    }
             )
         }
     }

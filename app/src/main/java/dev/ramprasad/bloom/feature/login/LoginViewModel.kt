@@ -66,4 +66,11 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
             }
         }
     }
+
+    fun onSignOut(){
+        viewModelScope.launch {
+            loginRepository.signOut()
+            isUserLoggedIn()
+        }
+    }
 }

@@ -1,4 +1,5 @@
 // TODO: 30-06-2021 Integrate work manager and sync to room database
+// TODO: 01-07-2021 Remove Splashscreen and implement new SplashScreen API
 // TODO: 30-06-2021 Firebase API integration for home screen
 // TODO: 30-06-2021 Implement Push Notification to sync with firebase firestore
 // TODO: 30-06-2021 Home screen App Search library integration

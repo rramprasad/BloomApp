@@ -11,6 +11,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.startup.AppInitializer
+import androidx.work.WorkManager
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -64,7 +65,13 @@ object AppModule {
         return AppInitializer.getInstance(applicationContext)
     }
 
-    private fun prePopulateDatabase(@ApplicationContext applicationContext: Context) {
+    @Provides
+    @Singleton
+    fun provideWorkManager(@ApplicationContext applicationContext: Context): WorkManager {
+        return WorkManager.getInstance(applicationContext)
+    }
+
+    /*private fun prePopulateDatabase(@ApplicationContext applicationContext: Context) {
         GlobalScope.launch {
             val appDatabase = provideRoomDatabase(applicationContext)
             appDatabase.UserDao().insert(User(0, "ramtrg@gmail.com", "Ramprasad"))
@@ -84,5 +91,5 @@ object AppModule {
                 Plant("U", "Pothos","https://raw.githubusercontent.com/rramprasad/BloomAppAssets/main/Plants/plant6.jpg","This is a description","E")
             )
         }
-    }
+    }*/
 }

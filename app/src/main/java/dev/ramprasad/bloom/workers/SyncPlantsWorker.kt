@@ -8,9 +8,13 @@ package dev.ramprasad.bloom.workers
 
 import android.content.Context
 import android.util.Log
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import dagger.hilt.EntryPoint
 import dev.ramprasad.bloom.database.AppDatabase
 import dev.ramprasad.bloom.database.GardenTheme
 import dev.ramprasad.bloom.database.Plant
@@ -19,13 +23,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-
-class SyncPlantsWorker(appContext:Context, workerParams:WorkerParameters) : CoroutineWorker(appContext,workerParams) {
+@HiltWorker
+class SyncPlantsWorker @AssistedInject constructor(@Assisted appContext:Context,@Assisted workerParams:WorkerParameters, private val fireStoreDatabase: FirebaseFirestore, private val appDatabase:AppDatabase) : CoroutineWorker(appContext,workerParams) {
     private val LOG_TAG: String = "SyncPlantsWorker"
-    @Inject lateinit var fireStoreDatabase:FirebaseFirestore
-    @Inject lateinit var appDatabase:AppDatabase
+    //@Inject lateinit var fireStoreDatabase:FirebaseFirestore
+    //@Inject lateinit var appDatabase:AppDatabase
 
     override suspend fun doWork(): Result {
+        Log.d("SyncPlantsWorker", "create: ")
         var workerResult = Result.failure()
         withContext(Dispatchers.IO){
             fireStoreDatabase.collection("plants")

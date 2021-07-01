@@ -130,7 +130,12 @@ fun MainScreen(appNavController: NavHostController) {
                 val loginViewModel = hiltViewModel<LoginViewModel>()
                 val loggedIn = loginViewModel.userLoggedIn.collectAsState().value
                 if (!loggedIn) {
-                    appNavController.navigate(Screen.WelcomeScreen.route)
+                    appNavController.navigate("LoginSubNavigationGraphRoute") {
+                        popUpTo(Screen.MainScreen.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 }
             }
 
@@ -139,7 +144,12 @@ fun MainScreen(appNavController: NavHostController) {
                 val loginViewModel = hiltViewModel<LoginViewModel>()
                 val loggedIn = loginViewModel.userLoggedIn.collectAsState().value
                 if (!loggedIn) {
-                    appNavController.navigate(Screen.WelcomeScreen.route)
+                    appNavController.navigate("LoginSubNavigationGraphRoute") {
+                        popUpTo(Screen.MainScreen.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 }
             }
 
@@ -148,7 +158,12 @@ fun MainScreen(appNavController: NavHostController) {
                 val loginViewModel = hiltViewModel<LoginViewModel>()
                 val loggedIn = loginViewModel.userLoggedIn.collectAsState().value
                 if (!loggedIn) {
-                    appNavController.navigate(Screen.WelcomeScreen.route)
+                    appNavController.navigate("LoginSubNavigationGraphRoute") {
+                        popUpTo(Screen.MainScreen.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 }
             }
 
@@ -157,7 +172,12 @@ fun MainScreen(appNavController: NavHostController) {
                 val loginViewModel = hiltViewModel<LoginViewModel>()
                 val loggedIn = loginViewModel.userLoggedIn.collectAsState().value
                 if (!loggedIn) {
-                    appNavController.navigate(Screen.WelcomeScreen.route)
+                    appNavController.navigate("LoginSubNavigationGraphRoute") {
+                        popUpTo(Screen.MainScreen.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 }
             }
         }

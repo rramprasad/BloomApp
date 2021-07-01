@@ -45,10 +45,22 @@
             >
             <!-- This entry makes AppInitializer discoverable. -->
             <meta-data
-                android:name="dev.ramprasad.bloom.BloomAppInitializer"
+                android:name="dev.ramprasad.bloom.appinitializer.BloomAppInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                />
+
+            <meta-data
+                android:name="androidx.work.impl.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"
+                />
         </provider>
+
+        <provider
+            android:name="androidx.work.impl.WorkManagerInitializer"
+            android:authorities="${applicationId}.workmanager-init"
+            tools:node="remove" />
+
     </application>
 
 </manifest>
