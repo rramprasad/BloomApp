@@ -47,6 +47,7 @@ Beautiful home garden solution Android app developed using latest Android UI too
 - No Fragments
 - No XML
 - No Data binding
+- No LiveData and its dependencies (Used Kotlin StateFlow)
 
 ## License
 [LICENSE](LICENSE)
