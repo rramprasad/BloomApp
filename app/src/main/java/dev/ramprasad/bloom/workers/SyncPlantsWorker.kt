@@ -24,10 +24,10 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltWorker
-class SyncPlantsWorker @AssistedInject constructor(@Assisted appContext:Context,@Assisted workerParams:WorkerParameters, private val fireStoreDatabase: FirebaseFirestore, private val appDatabase:AppDatabase) : CoroutineWorker(appContext,workerParams) {
+class SyncPlantsWorker @AssistedInject constructor(@Assisted appContext:Context,@Assisted workerParams:WorkerParameters) : CoroutineWorker(appContext,workerParams) {
     private val LOG_TAG: String = "SyncPlantsWorker"
-    //@Inject lateinit var fireStoreDatabase:FirebaseFirestore
-    //@Inject lateinit var appDatabase:AppDatabase
+    @Inject lateinit var fireStoreDatabase:FirebaseFirestore
+    @Inject lateinit var appDatabase:AppDatabase
 
     override suspend fun doWork(): Result {
         Log.d("SyncPlantsWorker", "create: ")

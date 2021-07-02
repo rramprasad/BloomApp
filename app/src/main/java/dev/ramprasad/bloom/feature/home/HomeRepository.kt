@@ -23,21 +23,13 @@ class HomeRepository @Inject constructor() {
     // Flow of List data instead of single shot list fetch
     // Get Garden Themes list from local database
     suspend fun getGardenThemesList(): Flow<List<GardenTheme>> {
-        return flow<List<GardenTheme>> {
-            val gardenThemeDao = database.GardenThemeDao()
-            val gardenThemesList = gardenThemeDao.getAll()
-            Log.d("FlowLog", "emitted: $gardenThemesList")
-            emit(gardenThemesList)
-        }
+        val gardenThemeDao = database.GardenThemeDao()
+        return gardenThemeDao.getAll()
     }
 
     // Get plants list from local database
     suspend fun getPlantsList(): Flow<List<Plant>> {
-        return flow {
-            val plantDao = database.PlantDao()
-            val plantsList = plantDao.getAll()
-            Log.d("FlowLog", "emitted: $plantsList")
-            emit(plantsList)
-        }
+        val plantDao = database.PlantDao()
+        return plantDao.getAll()
     }
 }

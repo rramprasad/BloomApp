@@ -37,29 +37,24 @@
             </intent-filter>
         </activity>
 
-        <provider
+       <!--<provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge"
             >
-            <!-- This entry makes AppInitializer discoverable. -->
+            &lt;!&ndash; This entry makes AppInitializer discoverable. &ndash;&gt;
             <meta-data
                 android:name="dev.ramprasad.bloom.appinitializer.BloomAppInitializer"
                 android:value="androidx.startup"
                 />
 
-            <meta-data
+            &lt;!&ndash;<meta-data
                 android:name="androidx.work.impl.WorkManagerInitializer"
                 android:value="androidx.startup"
                 tools:node="remove"
-                />
-        </provider>
-
-        <provider
-            android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="${applicationId}.workmanager-init"
-            tools:node="remove" />
+                />&ndash;&gt;
+        </provider>-->
 
     </application>
 

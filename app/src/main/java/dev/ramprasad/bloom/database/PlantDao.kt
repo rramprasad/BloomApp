@@ -10,12 +10,13 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlantDao {
 
     @Query("SELECT * FROM plant")
-    suspend fun getAll() : List<Plant>
+    fun getAll() : Flow<List<Plant>>
 
     @Query("SELECT * FROM plant WHERE plant_id = :plantId")
     suspend fun findByPlantId(plantId : Int) : Plant

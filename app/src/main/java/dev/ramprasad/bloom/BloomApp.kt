@@ -15,31 +15,21 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.HiltAndroidApp
 import dev.ramprasad.bloom.appinitializer.BloomAppInitializer
 import dev.ramprasad.bloom.database.AppDatabase
-import dev.ramprasad.bloom.workers.CustomWorkerFactory
+import dev.ramprasad.bloom.database.GardenTheme
+import dev.ramprasad.bloom.database.Plant
 import dev.ramprasad.bloom.workers.SyncGardenThemesWorker
 import dev.ramprasad.bloom.workers.SyncPlantsWorker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltAndroidApp
-class BloomApp : Application()/*, Configuration.Provider*/{
-
-    //@Inject lateinit var workerFactory: HiltWorkerFactory
-    @Inject lateinit var fireStoreDatabase: FirebaseFirestore
-    @Inject lateinit var appDatabase: AppDatabase
-
+class BloomApp : Application(){
     override fun onCreate() {
         super.onCreate()
-        //AppInitializer.getInstance(this).initializeComponent(BloomAppInitializer::class.java)
     }
-
-    /*override fun getWorkManagerConfiguration(): Configuration {
-        val delegatingWorkerFactory = DelegatingWorkerFactory()
-        delegatingWorkerFactory.addFactory(CustomWorkerFactory(fireStoreDatabase,appDatabase))
-        return Configuration.Builder()
-            .setWorkerFactory(delegatingWorkerFactory)
-            .setMinimumLoggingLevel(Log.DEBUG)
-            .build()
-    }*/
 }
 
 
