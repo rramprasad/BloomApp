@@ -39,8 +39,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun AppNavigation() {
     val appNavController = rememberNavController()
 
-    NavHost(navController = appNavController, startDestination = Screen.SplashScreen.route) {
-        // Splash screen
+    NavHost(navController = appNavController, startDestination = Screen.MainScreen.route) {
+        /*// Splash screen
         composable(Screen.SplashScreen.route) {
             val loginViewModel = hiltViewModel<LoginViewModel>()
             val loggedIn = loginViewModel.userLoggedIn.collectAsState().value
@@ -62,7 +62,7 @@ fun AppNavigation() {
                     }
                 }
             }
-        }
+        }*/
 
         navigation(Screen.WelcomeScreen.route, "LoginSubNavigationGraphRoute") {
             // Login Welcome screen

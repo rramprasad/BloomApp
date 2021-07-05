@@ -17,8 +17,9 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'project-report'
 
 android {
-    //compileSdkVersion "android-S"
-    compileSdkVersion 30
+    compileSdkVersion "android-S"
+    //compileSdkVersion 30
+    //compileSdkVersion 31
     //def latestVersionCode
 
     defaultConfig {
@@ -100,6 +101,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-alpha02"
+
+    // Core SplashScreen API(Android 12)
+    implementation "androidx.core:core-splashscreen:1.0.0-alpha01"
 
     // Jetpack Compose UI
     implementation "androidx.compose.ui:ui:1.0.0-rc01"

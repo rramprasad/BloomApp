@@ -29,6 +29,7 @@ Beautiful home garden solution Android app developed using latest Android UI too
 - [Lottie Animation with Jetpack Compose](https://airbnb.io/lottie/#/android-compose)
 - [App Startup](https://developer.android.com/topic/libraries/app-startup)
 - [Work Manager](https://developer.android.com/topic/libraries/architecture/workmanager)
+- [Android 12 SplashScreen API with support from API 23](https://developer.android.com/about/versions/12/features/splash-screen)
 
 ## App Architecture
 - [Unidirectional data flow(UDF) Architecture](https://developer.android.com/jetpack/compose/architecture#udf)

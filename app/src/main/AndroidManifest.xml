@@ -23,12 +23,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:theme="@style/BloomAppTheme"
         android:name="dev.ramprasad.bloom.BloomApp"
         >
         <activity
             android:name="dev.ramprasad.bloom.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Bloom.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
