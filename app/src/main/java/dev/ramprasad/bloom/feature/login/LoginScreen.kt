@@ -15,10 +15,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,6 +66,7 @@ fun LoginScreen(loginViewModel:LoginViewModel = hiltViewModel(),onLoginSuccess: 
             val passwordErrorState = rememberSaveable {
                 mutableStateOf(currentContext.getString(R.string.password_label))
             }
+
             PasswordTextField(passwordState,passwordErrorState)
             Spacer(modifier = Modifier.size(8.dp))
             TermsOfUseText()
