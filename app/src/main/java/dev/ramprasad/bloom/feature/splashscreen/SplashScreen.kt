@@ -4,7 +4,7 @@
  * Last modified 09/06/21, 8:57 PM
  */
 
-package dev.ramprasad.bloom.ui
+package dev.ramprasad.bloom.feature.splashscreen
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -19,9 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieAnimationSpec
-import com.airbnb.lottie.compose.rememberLottieAnimationState
 import dev.ramprasad.bloom.R
 import dev.ramprasad.bloom.theme.BloomTheme
 
@@ -40,33 +37,7 @@ fun SplashScreen(onTimeout: () -> Unit) {
         val rememberedAppNameVisibility by rememberSaveable {
             mutableStateOf(false)
         }
-        LoadLottieAnimation(rememberedOnTimeout)
         AppName(rememberedAppNameVisibility)
-    }
-}
-
-@Composable
-fun LoadLottieAnimation(rememberedOnTimeout: () -> Unit) {
-    val animationSpec = remember {
-        LottieAnimationSpec.RawRes(R.raw.bloom_animation)
-    }
-
-    val animationState = rememberLottieAnimationState(
-        autoPlay = true,
-        repeatCount = 0
-    )
-    animationState.speed = 1F
-
-    LottieAnimation(
-        spec = animationSpec,
-        modifier = Modifier
-            .wrapContentWidth()
-            .wrapContentHeight(),
-        animationState = animationState
-    )
-
-    if(!animationState.isPlaying){
-        rememberedOnTimeout()
     }
 }
 
