@@ -17,16 +17,16 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'project-report'
 
 android {
-    compileSdkVersion "android-S"
+    //compileSdkVersion "android-S"
     //compileSdkVersion 30
-    //compileSdkVersion 31
+    compileSdkVersion 31
     //def latestVersionCode
 
     defaultConfig {
         applicationId "dev.ramprasad.bloom"
         minSdkVersion 23
         //targetSdkVersion "S"
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 6
         versionName "1.0.6"
 
